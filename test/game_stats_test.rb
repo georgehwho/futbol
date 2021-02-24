@@ -1,13 +1,22 @@
 require "./test/test_helper"
-require "./lib/game_stats"
 
 class GameStatsTest < Minitest::Test
+  attr_reader :game_stats,
+              :stat_tracker
+
   def setup
-    @game_stats = GameStats.new('./data/games_truncated.csv')
+    @stat_tracker = mock
+    @game_stats = GameStats.new('./data/games_truncated.csv', @stat_tracker)
   end
 
   def test_it_exists
-    assert_instance_of GameStats, @game_stats
+    assert_instance_of GameStats, game_stats
+  end
+
+  def test_it_has_readable_attributes
+    assert_equal stat_tracker, game_stats.stat_tracker
+    assert_equal 50, game_stats.games.size
+    assert_equal 50, game_stats.games_hash.size
   end
 
   def test_it_can_load_from_csv
@@ -19,7 +28,7 @@ class GameStatsTest < Minitest::Test
     first_game = Game.new(first_row)
 
     assert_equal first_game.game_id, @game_stats.games.first.game_id
-    assert_instance_of Array, @game_stats.game
+    assert_instance_of Array, @game_stats.games
   end
 
   def test_it_can_also_have_a_games_hash
@@ -27,6 +36,7 @@ class GameStatsTest < Minitest::Test
   end
 
   def test_game_can_find_highest_total_score
+    # skip
     assert_equal 6, @game_stats.highest_total_score
   end
 end

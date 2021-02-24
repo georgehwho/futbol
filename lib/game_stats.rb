@@ -5,10 +5,22 @@ class GameStats
   include LoadCSV
 
   attr_reader :games,
-              :games_hash
+              :games_hash,
+              :stat_tracker
 
-  def initialize(file_path)
+  def initialize(file_path, stat_tracker)
+    @stat_tracker = stat_tracker
+    @games = []
+    @games_hash = {}
+    create_games_array(file_path)
+    create_games_hash
+  end
+
+  def create_games_array(file_path)
     @games = load_csv(file_path, Game)
+  end
+
+  def create_games_hash
     @games_hash = games.map { |game| [game.game_id, game] }.to_h
   end
 
