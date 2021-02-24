@@ -11,6 +11,7 @@ class GameStats
   end
 
   def highest_total_score
-    'hello, world'
+    highest_scoring_game = games.max_by { |game| game.total_score}
+    highest_scoring_game.total_score
   end
 end

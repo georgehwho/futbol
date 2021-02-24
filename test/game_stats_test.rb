@@ -21,5 +21,7 @@ class GameStatsTest < Minitest::Test
     assert_equal first_game.game_id, @game_stats.games.first.game_id
   end
 
-
+  def test_game_can_find_highest_total_score
+    assert_equal 6, @game_stats.highest_total_score
+  end
 end
