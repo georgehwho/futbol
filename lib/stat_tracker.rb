@@ -8,9 +8,9 @@ class StatTracker
   end
 
   def initialize(locations)
-    @game_stats = GameStats.new(locations[:games])
-    # @game_teams = load_csv(locations[:game_teams], GameTeam)
-    # @teams = load_csv(locations[:teams], Team)
+    @game_stats = GameStats.new(locations[:games], self)
+    @game_teams = load_csv(locations[:game_teams], self)
+    @teams = load_csv(locations[:teams], self)
   end
 
   def highest_total_score
