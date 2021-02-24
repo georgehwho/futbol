@@ -5,7 +5,6 @@
 ### New Feature Submissions:
 
 * [ ] Have you added an explanation of what your changes do?
-* [ ] Have you lint your code locally prior to submission?
 
 ### Testing:
 
@@ -15,3 +14,4 @@
 
 **Test coverage** =  
 ----------------------------------------------------------
+### Notes
