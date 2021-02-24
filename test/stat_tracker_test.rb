@@ -18,6 +18,6 @@ class StatTrackerTest < Minitest::Test
 	end
 
 	def test_it_can_find_the_highest_total_score
-		assert_equal 'hello, world', @stat_tracker.highest_total_score
+		assert_equal 11, @stat_tracker.highest_total_score
 	end
 end
