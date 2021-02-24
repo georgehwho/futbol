@@ -19,6 +19,11 @@ class GameStatsTest < Minitest::Test
     first_game = Game.new(first_row)
 
     assert_equal first_game.game_id, @game_stats.games.first.game_id
+    assert_instance_of Array, @game_stats.game
+  end
+
+  def test_it_can_also_have_a_games_hash
+    assert_instance_of Hash, @game_stats.games_hash
   end
 
   def test_game_can_find_highest_total_score
