@@ -7,3 +7,4 @@ require 'minitest/autorun'
 require 'mocha/minitest'
 require './lib/team'
 require "./lib/game_stats"
+require "./lib/game_teams"
