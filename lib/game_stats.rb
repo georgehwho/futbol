@@ -10,8 +10,8 @@ class GameStats
 
   def initialize(file_path, stat_tracker)
     @stat_tracker = stat_tracker
-    @games = []
-    @games_hash = {}
+    @games        = []
+    @games_hash   = {}
     create_games_array(file_path)
     create_games_hash
   end
