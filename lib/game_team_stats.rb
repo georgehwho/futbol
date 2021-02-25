@@ -16,5 +16,4 @@ class GameTeamStats
   def create_game_teams_array(file_path)
     @game_teams = load_csv(file_path, GameTeam)
   end
-
 end
