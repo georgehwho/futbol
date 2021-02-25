@@ -5,13 +5,13 @@ class GameStats
   include LoadCSV
 
   attr_reader :games,
-              :games_hash,
-              :stat_tracker
+  :games_hash,
+  :stat_tracker
 
   def initialize(file_path, stat_tracker)
     @stat_tracker = stat_tracker
-    @games = []
-    @games_hash = {}
+    @games        = []
+    @games_hash   = {}
     create_games_array(file_path)
     create_games_hash
   end
@@ -22,6 +22,10 @@ class GameStats
 
   def create_games_hash
     @games_hash = games.map { |game| [game.game_id, game] }.to_h
+  end
+
+  def find_by_id(id)
+    @games_hash[id]
   end
 
   def highest_total_score

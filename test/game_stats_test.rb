@@ -27,12 +27,16 @@ class GameStatsTest < Minitest::Test
 
     first_game = Game.new(first_row)
 
-    assert_equal first_game.game_id, @game_stats.games.first.game_id
+    assert_equal first_game.game_id, @game_stats.create_games_array('./data/games_truncated.csv').first.game_id
     assert_instance_of Array, @game_stats.games
   end
 
   def test_it_can_also_have_a_games_hash
     assert_instance_of Hash, @game_stats.games_hash
+  end
+
+  def test_it_can_find_a_game_by_id
+    assert_instance_of Game, game_stats.find_by_id(2012030221)
   end
 
   def test_game_can_find_highest_total_score
