@@ -21,13 +21,21 @@ class TestStatsTest < Minitest::Test
 
   def test_it_can_create_teams
     # skip
-    team_stats.stubs(:load_csv).returns([Team.new{@abbreviation="ATL",
-                                                  @franchiseId=0,
-                                                  @link="/api/v1/teams/1",
-                                                  @stadium="Mercedes-Benz Stadium",
-                                                  @teamName=nil,
-                                                  @team_id=1 }])
+    team_stats.stubs(:load_csv).returns([Team.new( { abbreviation: "ATL",
+                                                    franchiseId: 0,
+                                                    link: "/api/v1/teams/1",
+                                                    stadium: "Mercedes-Benz Stadium",
+                                                    teamName: nil,
+                                                    team_id: 1 } ) ] )
     team_stats.create_teams_array('')
     assert_equal 'ATL', team_stats.teams.first.abbreviation
+  end
+
+  def test_it_can_create_hash
+    assert_instance_of Hash, team_stats.create_teams_hash
+  end
+
+  def test_it_can_find_a_team_by_id
+    assert_instance_of Team, team_stats.find_by_id(1)
   end
 end

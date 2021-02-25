@@ -5,8 +5,8 @@ class GameStats
   include LoadCSV
 
   attr_reader :games,
-              :games_hash,
-              :stat_tracker
+  :games_hash,
+  :stat_tracker
 
   def initialize(file_path, stat_tracker)
     @stat_tracker = stat_tracker
@@ -25,8 +25,8 @@ class GameStats
   end
 
   def find_by_id(id)
-   @games_hash[id]
- end
+    @games_hash[id]
+  end
 
   def highest_total_score
     highest_scoring_game = games.max_by { |game| game.total_score}
