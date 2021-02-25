@@ -35,6 +35,10 @@ class GameStatsTest < Minitest::Test
     assert_instance_of Hash, @game_stats.games_hash
   end
 
+  def test_it_can_find_a_game_by_id
+    assert_instance_of Game, game_stats.find_by_id(2012030221)
+  end
+
   def test_game_can_find_highest_total_score
     # skip
     assert_equal 6, @game_stats.highest_total_score

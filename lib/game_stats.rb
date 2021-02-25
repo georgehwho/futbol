@@ -24,6 +24,10 @@ class GameStats
     @games_hash = games.map { |game| [game.game_id, game] }.to_h
   end
 
+  def find_by_id(id)
+   @games_hash[id]
+ end
+
   def highest_total_score
     highest_scoring_game = games.max_by { |game| game.total_score}
     highest_scoring_game.total_score
