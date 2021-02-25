@@ -27,7 +27,7 @@ class GameStatsTest < Minitest::Test
 
     first_game = Game.new(first_row)
 
-    assert_equal first_game.game_id, @game_stats.games.first.game_id
+    assert_equal first_game.game_id, @game_stats.create_games_array('./data/games_truncated.csv').first.game_id
     assert_instance_of Array, @game_stats.games
   end
 
