@@ -7,18 +7,22 @@ class StatTracker
               :game_team_stats,
               :team_stats
 
-  def self.from_csv(locations)
-  	new(locations)
+  def initialize(locations)
+    @game_stats      = GameStats.new(locations[:games], self)
+    @game_team_stats = GameTeamStats.new(locations[:game_teams], self)
+    @team_stats      = TeamStats.new(locations[:teams], self)
   end
 
-  def initialize(locations)
-    @game_stats = GameStats.new(locations[:games], self)
-    @game_teams = GameTeamStats.new(locations[:game_teams], self)
-    @team_stats = TeamStats.new(locations[:teams], self)
+  def self.from_csv(locations)
+    new(locations)
   end
 
   def highest_total_score
     game_stats.highest_total_score
+  end
+
+  def lowest_total_score
+    game_stats.lowest_total_score
   end
 
 end
