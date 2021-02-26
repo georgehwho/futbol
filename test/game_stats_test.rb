@@ -44,6 +44,11 @@ class GameStatsTest < Minitest::Test
     assert_instance_of Game, game_stats.find_by_id(2012030221)
   end
 
+  def test_it_can_find_a_team_by_id
+    assert_instance_of Team, game_stats.stat_tracker.team_stats.find_by_id(1)
+    assert_equal 'Atlanta United', game_stats.stat_tracker.team_stats.find_by_id(1).team_name
+  end
+
   def test_game_can_find_highest_total_score
     # skip
     assert_equal 6, @game_stats.highest_total_score
@@ -53,4 +58,5 @@ class GameStatsTest < Minitest::Test
     # skip
     assert_equal 1, @game_stats.lowest_total_score
   end
+
 end
