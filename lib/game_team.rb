@@ -28,7 +28,7 @@ class GameTeam
     @pim                         = data[:pim].to_i
     @powerPlayGoalsOpportunities = data[:powerPlayGoalsOpportunities].to_i
     @powerPlayGoals              = data[:powerPlayGoals].to_i
-    @faceOffWinPercentage        = data[:faceOffWinPercentage].to_i
+    @faceOffWinPercentage        = data[:faceOffWinPercentage].to_f
     @giveaways                   = data[:giveaways].to_i
     @takeaways                   = data[:takeaways].to_i
   end
