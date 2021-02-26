@@ -4,21 +4,21 @@ class GameTeamTest  < Minitest::Test
 
   def setup
     @chargers = GameTeam.new({
-                    game_id: 1,
-                    team_id: 2,
+                    game_id: "1",
+                    team_id: "2",
                     HoA: "away",
                     result: "WIN",
                     settled_in: "OT",
                     head_coach: "Olivia",
-                    goals: 22,
-                    shots: 7,
-                    tackles: 2,
-                    pim: 1,
-                    powerPlayGoalsOpportunities: 4,
-                    powerPlayGoals: 3,
-                    faceOffWinPercentage: 99.9,
-                    giveaways: 5,
-                    takeaways: 6
+                    goals: "22",
+                    shots: "7",
+                    tackles: "2",
+                    pim: "1",
+                    powerPlayGoalsOpportunities: "4",
+                    powerPlayGoals: "3",
+                    faceOffWinPercentage: "99.9",
+                    giveaways: "5",
+                    takeaways: "6"
       })
   end
 
