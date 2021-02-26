@@ -6,6 +6,8 @@ require 'minitest/pride'
 require 'minitest/autorun'
 require 'mocha/minitest'
 
+require './lib/stat_tracker'
+
 require './lib/team'
 require "./lib/game"
 require "./lib/game_team"

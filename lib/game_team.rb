@@ -16,20 +16,20 @@ class GameTeam
               :takeaways
 
   def initialize(data)
-    @game_id                     = data[:game_id]
-    @team_id                     = data[:team_id]
+    @game_id                     = data[:game_id].to_i
+    @team_id                     = data[:team_id].to_i
     @HoA                         = data[:HoA]
     @result                      = data[:result]
     @settled_in                  = data[:settled_in]
     @head_coach                  = data[:head_coach]
-    @goals                       = data[:goals]
-    @shots                       = data[:shots]
-    @tackles                     = data[:tackles]
-    @pim                         = data[:pim]
-    @powerPlayGoalsOpportunities = data[:powerPlayGoalsOpportunities]
-    @powerPlayGoals              = data[:powerPlayGoals]
-    @faceOffWinPercentage        = data[:faceOffWinPercentage]
-    @giveaways                   = data[:giveaways]
-    @takeaways                   = data[:takeaways]
+    @goals                       = data[:goals].to_i
+    @shots                       = data[:shots].to_i
+    @tackles                     = data[:tackles].to_i
+    @pim                         = data[:pim].to_i
+    @powerPlayGoalsOpportunities = data[:powerPlayGoalsOpportunities].to_i
+    @powerPlayGoals              = data[:powerPlayGoals].to_i
+    @faceOffWinPercentage        = data[:faceOffWinPercentage].to_f
+    @giveaways                   = data[:giveaways].to_i
+    @takeaways                   = data[:takeaways].to_i
   end
 end

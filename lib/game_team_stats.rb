@@ -16,4 +16,9 @@ class GameTeamStats
   def create_game_teams_array(file_path)
     @game_teams = load_csv(file_path, GameTeam)
   end
+
+  # percentage_home_wins	Percentage of games that a home team has won (rounded to the nearest 100th)	Float
+  def percentage_home_wins
+
+  end
 end

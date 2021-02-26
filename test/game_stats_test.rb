@@ -5,8 +5,13 @@ class GameStatsTest < Minitest::Test
               :stat_tracker
 
   def setup
-    @stat_tracker = mock
-    @game_stats = GameStats.new('./data/games_truncated.csv', @stat_tracker)
+    @locations = {
+      games: './test/truncated_csv/games_truncated.csv',
+      teams: './data/teams.csv',
+      game_teams: './test/truncated_csv/game_teams_truncated.csv'
+    }
+    @stat_tracker = StatTracker.new(@locations)
+    @game_stats = stat_tracker.game_stats
   end
 
   def test_it_exists
@@ -21,13 +26,13 @@ class GameStatsTest < Minitest::Test
 
   def test_it_can_load_from_csv
     # skip
-    first_row = CSV.open('./data/games_truncated.csv', headers: true, header_converters: :symbol ) {
+    first_row = CSV.open('./test/truncated_csv/games_truncated.csv', headers: true, header_converters: :symbol ) {
       |csv| csv.first
     }
 
     first_game = Game.new(first_row)
 
-    assert_equal first_game.game_id, @game_stats.create_games_array('./data/games_truncated.csv').first.game_id
+    assert_equal first_game.game_id, @game_stats.create_games_array('./test/truncated_csv/games_truncated.csv').first.game_id
     assert_instance_of Array, @game_stats.games
   end
 
@@ -39,8 +44,19 @@ class GameStatsTest < Minitest::Test
     assert_instance_of Game, game_stats.find_by_id(2012030221)
   end
 
+  def test_it_can_find_a_team_by_id
+    assert_instance_of Team, game_stats.stat_tracker.team_stats.find_by_id(1)
+    assert_equal 'Atlanta United', game_stats.stat_tracker.team_stats.find_by_id(1).team_name
+  end
+
   def test_game_can_find_highest_total_score
     # skip
     assert_equal 6, @game_stats.highest_total_score
   end
+
+  def test_game_can_find_lowest_total_score
+    # skip
+    assert_equal 1, @game_stats.lowest_total_score
+  end
+
 end
