@@ -2,8 +2,7 @@ require "./test/test_helper"
 
 class GameTeamStatsTest < Minitest::Test
   attr_reader :game_teams_stats,
-              :stat_tracker,
-              :locations
+              :stat_tracker
 
   def setup
     @locations = {

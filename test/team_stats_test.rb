@@ -5,8 +5,13 @@ class TestStatsTest < Minitest::Test
               :stat_tracker
 
   def setup
-    @stat_tracker = mock
-    @team_stats = TeamStats.new('./data/teams.csv', @stat_tracker)
+    @locations = {
+      games: './test/truncated_csv/games_truncated.csv',
+      teams: './data/teams.csv',
+      game_teams: './test/truncated_csv/game_teams_truncated.csv'
+    }
+    @stat_tracker = StatTracker.new(@locations)
+    @team_stats = stat_tracker.team_stats
   end
 
   def test_it_exists
