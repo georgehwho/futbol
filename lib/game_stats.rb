@@ -40,16 +40,20 @@ class GameStats
 
   def percentage_home_wins
     total_home_games_won = games.find_all { |game| game.home_win? }.size
-    (total_home_games_won / games.size.to_f).round(2)
+    percentage_of_games(total_home_games_won)
   end
 
   def percentage_visitor_wins
     total_visitor_games_won = games.find_all { |game| game.away_win? }.size
-    (total_visitor_games_won / games.size.to_f).round(2)
+    percentage_of_games(total_visitor_games_won)
   end
 
   def percentage_ties
     total_games_tied = games.find_all { |game| game.tie? }.size
-    (total_games_tied / games.size.to_f).round(2)
+    percentage_of_games(total_games_tied)
+  end
+
+  def percentage_of_games(input)
+    (input / games.size.to_f).round(2)
   end
 end
