@@ -17,6 +17,7 @@ class StatTracker
     new(locations)
   end
 
+  ### Game Stats ###
   def highest_total_score
     game_stats.highest_total_score
   end
@@ -25,6 +26,19 @@ class StatTracker
     game_stats.lowest_total_score
   end
 
+  def percentage_home_wins
+    game_stats.percentage_home_wins
+  end
+
+  def percentage_visitor_wins
+    game_stats.percentage_visitor_wins
+  end
+
+  def percentage_ties
+    game_stats.percentage_ties
+  end
+
+  ### Team Stats ###
   def count_of_teams
     team_stats.count
   end
