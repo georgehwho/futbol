@@ -56,4 +56,13 @@ class GameStats
   def percentage_of_games(input)
     (input / games.size.to_f).round(2)
   end
+
+  def count_of_games_by_season
+    hash = {}
+    games.map do |game|
+      hash[game.season] = 0 if hash[game.season].nil?
+      hash[game.season] += 1
+    end
+    hash
+  end
 end

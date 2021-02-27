@@ -70,4 +70,12 @@ class GameStatsTest < Minitest::Test
   def test_it_knows_percentage_of_ties
     assert_equal 0.02, game_stats.percentage_ties
   end
+
+  def test_it_knows_how_to_count_games_by_season
+    expected = {
+      "20122013"=>49,
+      "20142015"=>1
+    }
+    assert_equal expected, game_stats.count_of_games_by_season
+  end
 end
