@@ -16,6 +16,7 @@ class StatTrackerTest < Minitest::Test
 		assert_instance_of StatTracker, stat_tracker
 	end
 
+	### Game Stat Test ###
 	def test_it_can_find_the_highest_total_score
 		# skip
 		assert_equal 6, @stat_tracker.highest_total_score
@@ -26,6 +27,40 @@ class StatTrackerTest < Minitest::Test
 		assert_equal 1, @stat_tracker.lowest_total_score
 	end
 
+	def test_it_knows_percentage_of_home_wins
+		assert_equal 0.66, @stat_tracker.percentage_home_wins
+	end
+
+	def test_it_knows_percentage_of_visitor_wins
+		assert_equal 0.32, @stat_tracker.percentage_visitor_wins
+	end
+
+	def test_it_knows_percentage_of_ties
+		assert_equal 0.02, @stat_tracker.percentage_ties
+	end
+
+	def test_it_knows_how_to_count_games_by_season
+		expected = {
+			"20122013"=>49,
+			"20142015"=>1
+		}
+		assert_equal expected, @stat_tracker.count_of_games_by_season
+	end
+
+	def test_it_knows_the_average_goals_per_game
+		assert_equal 3.9, @stat_tracker.average_goals_per_game
+	end
+
+	def test_it_knows_the_average_goals_by_season
+    # skip
+    expected = {
+      "20122013"=>3.92,
+      "20142015"=>3.0
+    }
+    assert_equal expected, @stat_tracker.average_goals_by_season
+  end
+
+	### Team Stat Test ###
 	def test_it_can_count_teams
 		assert_equal 32, @stat_tracker.count_of_teams
 	end

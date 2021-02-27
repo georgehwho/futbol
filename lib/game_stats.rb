@@ -28,6 +28,7 @@ class GameStats
     @games_hash[id]
   end
 
+  ### Required Queries ###
   def highest_total_score
     highest_scoring_game = games.max_by { |game| game.total_score}
     highest_scoring_game.total_score
@@ -35,5 +36,48 @@ class GameStats
 
   def lowest_total_score
     games.min_by { |game| game.total_score }.total_score
+  end
+
+  def percentage_home_wins
+    total_home_games_won = games.find_all { |game| game.home_win? }.size
+    percentage_of_games(total_home_games_won)
+  end
+
+  def percentage_visitor_wins
+    total_visitor_games_won = games.find_all { |game| game.away_win? }.size
+    percentage_of_games(total_visitor_games_won)
+  end
+
+  def percentage_ties
+    total_games_tied = games.find_all { |game| game.tie? }.size
+    percentage_of_games(total_games_tied)
+  end
+
+  def percentage_of_games(comparison, game_type = games)
+    (comparison / game_type.size.to_f).round(2)
+  end
+
+  def count_of_games_by_season
+    hash = {}
+    games.map do |game|
+      hash[game.season] = 0 if hash[game.season].nil?
+      hash[game.season] += 1
+    end
+    hash
+  end
+
+  def average_goals_per_game(input_games = games)
+    all_scores = input_games.sum(&:total_score)
+    percentage_of_games(all_scores, input_games)
+  end
+
+  def average_goals_by_season
+    games_by_season = games.group_by(&:season)
+    hash = {}
+    games_by_season.map do |season, season_games|
+      hash[season] = 0 if hash[season].nil?
+      hash[season] = average_goals_per_game(season_games)
+    end
+    hash
   end
 end

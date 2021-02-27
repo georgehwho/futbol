@@ -41,7 +41,7 @@ class GameStatsTest < Minitest::Test
   end
 
   def test_it_can_find_a_game_by_id
-    assert_instance_of Game, game_stats.find_by_id(2012030221)
+    assert_instance_of Game, game_stats.find_by_id('2012030221')
   end
 
   def test_it_can_find_a_team_by_id
@@ -58,5 +58,39 @@ class GameStatsTest < Minitest::Test
     # skip
     assert_equal 1, @game_stats.lowest_total_score
   end
+
+  def test_it_knows_percentage_of_home_wins
+    assert_equal 0.66, game_stats.percentage_home_wins
+  end
+
+  def test_it_knows_percentage_of_visitor_wins
+    assert_equal 0.32, game_stats.percentage_visitor_wins
+  end
+
+  def test_it_knows_percentage_of_ties
+    assert_equal 0.02, game_stats.percentage_ties
+  end
+
+  def test_it_knows_how_to_count_games_by_season
+    expected = {
+      "20122013"=>49,
+      "20142015"=>1
+    }
+    assert_equal expected, game_stats.count_of_games_by_season
+  end
+
+  def test_it_knows_the_average_goals_per_game
+    assert_equal 3.9, game_stats.average_goals_per_game
+  end
+
+  def test_it_knows_the_average_goals_by_season
+    # skip
+    expected = {
+      "20122013"=>3.92,
+      "20142015"=>3.0
+    }
+    assert_equal expected, game_stats.average_goals_by_season
+  end
+
 
 end
