@@ -40,10 +40,19 @@ class TestStatsTest < Minitest::Test
   end
 
   def test_it_can_find_a_team_by_id
-    assert_instance_of Team, team_stats.find_by_id(1)
+    assert_instance_of Team, team_stats.find_by_id("1")
   end
 
   def test__it_can_count_total_teams
     assert_equal 32, team_stats.count
+  end
+
+  def test_it_has_team_information
+    expected19 = {"franchise_id" => "18",
+                 "team_name" => "Philadelphia Union",
+                "abbreviation" => "PHI",
+                "link" => "/api/v1/teams/19",
+                "team_id" => "19" }
+  assert_equal expected19, team_stats.team_information("19")
   end
 end
