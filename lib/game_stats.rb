@@ -28,6 +28,7 @@ class GameStats
     @games_hash[id]
   end
 
+  ### Required Queries ###
   def highest_total_score
     highest_scoring_game = games.max_by { |game| game.total_score}
     highest_scoring_game.total_score
@@ -35,5 +36,20 @@ class GameStats
 
   def lowest_total_score
     games.min_by { |game| game.total_score }.total_score
+  end
+
+  def percentage_home_wins
+    total_home_games_won = games.find_all { |game| game.home_win? }.size
+    (total_home_games_won / games.size.to_f).round(2)
+  end
+
+  def percentage_visitor_wins
+    total_visitor_games_won = games.find_all { |game| game.away_win? }.size
+    (total_visitor_games_won / games.size.to_f).round(2)
+  end
+
+  def percentage_ties
+    total_games_tied = games.find_all { |game| game.tie? }.size
+    (total_games_tied / games.size.to_f).round(2)
   end
 end

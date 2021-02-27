@@ -59,4 +59,15 @@ class GameStatsTest < Minitest::Test
     assert_equal 1, @game_stats.lowest_total_score
   end
 
+  def test_it_knows_percentage_of_home_wins
+    assert_equal 0.66, game_stats.percentage_home_wins
+  end
+
+  def test_it_knows_percentage_of_visitor_wins
+    assert_equal 0.32, game_stats.percentage_visitor_wins
+  end
+
+  def test_it_knows_percentage_of_ties
+    assert_equal 0.02, game_stats.percentage_ties
+  end
 end
