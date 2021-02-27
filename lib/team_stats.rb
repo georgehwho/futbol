@@ -27,4 +27,10 @@ class TeamStats
   def find_by_id(id)
     @teams_hash[id]
   end
+
+  def count
+    @teams.count
+  end
+
+  
 end
