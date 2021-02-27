@@ -41,7 +41,7 @@ class GameStatsTest < Minitest::Test
   end
 
   def test_it_can_find_a_game_by_id
-    assert_instance_of Game, game_stats.find_by_id(2012030221)
+    assert_instance_of Game, game_stats.find_by_id('2012030221')
   end
 
   def test_it_can_find_a_team_by_id
