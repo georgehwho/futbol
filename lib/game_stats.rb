@@ -65,4 +65,9 @@ class GameStats
     end
     hash
   end
+
+  def average_goals_per_game
+    all_scores = games.sum(&:total_score)
+    percentage_of_games(all_scores)
+  end
 end
