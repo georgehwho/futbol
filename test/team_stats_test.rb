@@ -25,7 +25,6 @@ class TestStatsTest < Minitest::Test
   end
 
   def test_it_can_create_teams
-    # skip
     team_stats.stubs(:load_csv).returns([Team.new( { abbreviation: "ATL",
                                                     franchiseId: 0,
                                                     link: "/api/v1/teams/1",
@@ -42,5 +41,9 @@ class TestStatsTest < Minitest::Test
 
   def test_it_can_find_a_team_by_id
     assert_instance_of Team, team_stats.find_by_id(1)
+  end
+
+  def test__it_can_count_total_teams
+    assert_equal 32, team_stats.count
   end
 end
