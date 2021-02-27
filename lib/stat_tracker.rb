@@ -25,4 +25,12 @@ class StatTracker
     game_stats.lowest_total_score
   end
 
+  def count_of_teams
+    team_stats.count
+  end
+
+  def team_info(team_id)
+    team_stats.team_information(team_id)
+  end
+
 end
