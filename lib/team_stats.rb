@@ -32,5 +32,15 @@ class TeamStats
     @teams.count
   end
 
-  
+  def team_information(team_id)
+    team_data = @teams_hash[team_id]
+    information_hash= {
+      "franchise_id" => team_data.franchise_id.to_s,
+      "team_name" => team_data.team_name,
+      "abbreviation" => team_data.abbreviation,
+      "link" => team_data.link,
+      "team_id" => team_id.to_s
+    }
+  end
+
 end
