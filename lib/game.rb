@@ -11,7 +11,7 @@ class Game
               :venue_link
 
   def initialize(data)
-    @game_id      = data[:game_id].to_i
+    @game_id      = data[:game_id]
     @season       = data[:season].to_i
     @type         = data[:type]
     @date_time    = data[:date_time]
@@ -25,5 +25,17 @@ class Game
 
   def total_score
     away_goals + home_goals
+  end
+
+  def home_win?
+    home_goals > away_goals
+  end
+
+  def away_win?
+    away_goals > home_goals
+  end
+
+  def tie?
+    home_goals == away_goals
   end
 end
