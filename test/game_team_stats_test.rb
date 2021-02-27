@@ -32,8 +32,4 @@ class GameTeamStatsTest < Minitest::Test
 
     assert_instance_of Array, game_teams_stats.game_teams
   end
-
-  def test_it_knows_percentage_of_home_wins
-
-  end
 end
