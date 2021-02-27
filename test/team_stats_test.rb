@@ -29,7 +29,7 @@ class TestStatsTest < Minitest::Test
                                                     franchiseId: 0,
                                                     link: "/api/v1/teams/1",
                                                     stadium: "Mercedes-Benz Stadium",
-                                                    teamName: nil,
+                                                    teamName: "Atlanta",
                                                     team_id: 1 } ) ] )
     team_stats.create_teams_array('')
     assert_equal 'ATL', team_stats.teams.first.abbreviation
