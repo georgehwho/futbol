@@ -46,6 +46,10 @@ class StatTracker
     game_stats.average_goals_per_game
   end
 
+  def average_goals_by_season
+    game_stats.average_goals_by_season
+  end
+
   ### Team Stats ###
   def count_of_teams
     team_stats.count

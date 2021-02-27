@@ -53,8 +53,8 @@ class GameStats
     percentage_of_games(total_games_tied)
   end
 
-  def percentage_of_games(input)
-    (input / games.size.to_f).round(2)
+  def percentage_of_games(comparison, game_type = games)
+    (comparison / game_type.size.to_f).round(2)
   end
 
   def count_of_games_by_season
@@ -66,8 +66,18 @@ class GameStats
     hash
   end
 
-  def average_goals_per_game
-    all_scores = games.sum(&:total_score)
-    percentage_of_games(all_scores)
+  def average_goals_per_game(input_games = games)
+    all_scores = input_games.sum(&:total_score)
+    percentage_of_games(all_scores, input_games)
+  end
+
+  def average_goals_by_season
+    games_by_season = games.group_by(&:season)
+    hash = {}
+    games_by_season.map do |season, season_games|
+      hash[season] = 0 if hash[season].nil?
+      hash[season] = average_goals_per_game(season_games)
+    end
+    hash
   end
 end

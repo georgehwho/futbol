@@ -51,6 +51,15 @@ class StatTrackerTest < Minitest::Test
 		assert_equal 3.9, @stat_tracker.average_goals_per_game
 	end
 
+	def test_it_knows_the_average_goals_by_season
+    # skip
+    expected = {
+      "20122013"=>3.92,
+      "20142015"=>3.0
+    }
+    assert_equal expected, @stat_tracker.average_goals_by_season
+  end
+
 	### Team Stat Test ###
 	def test_it_can_count_teams
 		assert_equal 32, @stat_tracker.count_of_teams
