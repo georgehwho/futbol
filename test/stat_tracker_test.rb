@@ -39,6 +39,14 @@ class StatTrackerTest < Minitest::Test
 		assert_equal 0.02, @stat_tracker.percentage_ties
 	end
 
+	def test_it_knows_how_to_count_games_by_season
+		expected = {
+			"20122013"=>49,
+			"20142015"=>1
+		}
+		assert_equal expected, @stat_tracker.count_of_games_by_season
+	end
+
 	### Team Stat Test ###
 	def test_it_can_count_teams
 		assert_equal 32, @stat_tracker.count_of_teams

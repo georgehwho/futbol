@@ -38,6 +38,10 @@ class StatTracker
     game_stats.percentage_ties
   end
 
+  def count_of_games_by_season
+    game_stats.count_of_games_by_season
+  end
+
   ### Team Stats ###
   def count_of_teams
     team_stats.count
