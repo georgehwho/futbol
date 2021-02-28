@@ -60,6 +60,10 @@ class StatTrackerTest < Minitest::Test
     assert_equal expected, @stat_tracker.average_goals_by_season
   end
 
+	def test_it_has_a_best_season
+		assert_equal "20122013", @stat_tracker.best_season('19')
+	end
+
 	### Team Stat Test ###
 	def test_it_can_count_teams
 		assert_equal 32, @stat_tracker.count_of_teams

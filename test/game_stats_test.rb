@@ -92,5 +92,16 @@ class GameStatsTest < Minitest::Test
     assert_equal expected, game_stats.average_goals_by_season
   end
 
+  def test_it_can_find_games_by_team_id
+    assert_equal 6, game_stats.find_games_by_team_id('19').size
+  end
 
+  def test_it_can_find_game_won
+    games_played = game_stats.find_games_by_team_id('19')
+    assert_equal 3, game_stats.find_games_won(games_played, '19').size
+  end
+
+  def test_it_can_find_the_best_season
+    assert_equal "20122013", game_stats.best_season('19')
+  end
 end
