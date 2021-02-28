@@ -61,11 +61,7 @@ class StatTrackerTest < Minitest::Test
   end
 
 	### Team Stat Test ###
-	def test_it_can_count_teams
-		assert_equal 32, @stat_tracker.count_of_teams
-	end
-
-	def test_it_can_get_team_info
+  def test_it_can_get_team_info
 		expected = {
 			"team_id" => "18",
 			"franchise_id" => "34",
@@ -75,4 +71,13 @@ class StatTrackerTest < Minitest::Test
 		}
 		assert_equal expected, @stat_tracker.team_info("18")
 	end
+
+  ### League Stats Test ###
+  def test_it_can_count_teams
+		assert_equal 8, @stat_tracker.count_of_teams
+	end
+
+  def test_it_can_find_the_team_with_the_best_offense
+    assert_equal "New York City FC", @stat_tracker.best_offense
+  end
 end

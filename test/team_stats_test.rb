@@ -43,10 +43,6 @@ class TestStatsTest < Minitest::Test
     assert_instance_of Team, team_stats.find_by_id("1")
   end
 
-  def test__it_can_count_total_teams
-    assert_equal 32, team_stats.count
-  end
-
   def test_it_has_team_information
     expected19 = {"franchise_id" => "18",
                  "team_name" => "Philadelphia Union",
