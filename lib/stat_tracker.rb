@@ -59,4 +59,8 @@ class StatTracker
     team_stats.team_information(team_id)
   end
 
+  ### League Statistics ###
+  def best_offense
+    game_team_stats.best_offense
+  end
 end
