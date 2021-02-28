@@ -105,7 +105,12 @@ class GameStats
     games_by_season = games_won.group_by(&:season)
     test = games_by_season.max_by { |season, games| games.size }[0]
   end
-  # games_with_this_team = find_games_by_team_id('1')
-  # games_won_by_this_team = find_games_won(games_with_this_team, '1')
+
+  def worst_season(id)
+    games_played = find_games_by_team_id(id)
+    games_won = find_games_won(games_played, id)
+    games_by_season = games_won.group_by(&:season)
+    test = games_by_season.min_by { |season, games| games.size }[0]
+  end
 
 end

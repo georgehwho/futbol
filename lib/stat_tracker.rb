@@ -54,6 +54,10 @@ class StatTracker
     game_stats.best_season(team_id)
   end
 
+  def worst_season(team_id)
+    game_stats.worst_season(team_id)
+  end
+
   ### Team Stats ###
   def count_of_teams
     team_stats.count
