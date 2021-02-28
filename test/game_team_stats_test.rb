@@ -36,4 +36,16 @@ class GameTeamStatsTest < Minitest::Test
   def test_it_can_count_teams
     assert_equal 8, game_team_stats.count_of_teams
   end
+
+  def test_it_can_group_by_team_id
+    assert_instance_of Hash, game_team_stats.group_game_teams_by_team_id
+  end 
+
+  def test_it_can_find_average_goals
+    assert_equal 1.92, game_team_stats.average_goals_of_game_team
+  end
+
+  def test_it_can_find_the_team_with_the_best_offense
+    assert_equal "New York City FC", game_team_stats.best_offense
+  end
 end
