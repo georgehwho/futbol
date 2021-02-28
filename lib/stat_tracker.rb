@@ -50,6 +50,10 @@ class StatTracker
     game_stats.average_goals_by_season
   end
 
+  def best_season(team_id)
+    game_stats.best_season(team_id)
+  end
+
   ### Team Stats ###
   def count_of_teams
     team_stats.count

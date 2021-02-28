@@ -16,4 +16,9 @@ class GameTeamStats
   def create_game_teams_array(file_path)
     @game_teams = load_csv(file_path, GameTeam)
   end
+
+  # def best_season(team_id)
+  #   @game_teams
+  #
+  # end
 end
