@@ -16,4 +16,10 @@ class GameTeamStats
   def create_game_teams_array(file_path)
     @game_teams = load_csv(file_path, GameTeam)
   end
+
+  def count_of_teams
+    game_teams.uniq do |team|
+      team.team_id
+    end.size
+  end
 end
