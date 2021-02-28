@@ -108,4 +108,12 @@ class GameStatsTest < Minitest::Test
   def test_it_can_find_the_worst_season
     assert_equal "20122013", game_stats.worst_season('19')
   end
+
+  def test_most_goals_scored
+    assert_equal 4, game_stats.most_goals_scored('19')
+  end
+
+  def test_fewest_goals_scored
+    assert_equal 0, game_stats.fewest_goals_scored('19')
+  end
 end

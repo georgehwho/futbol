@@ -81,10 +81,17 @@ class StatTrackerTest < Minitest::Test
 		assert_equal expected, @stat_tracker.team_info("18")
 	end
 
-
 	def test_it_has_a_win_average
 		assert_equal 0.57, @stat_tracker.average_win_percentage('17')
 	end
+
+	def test_most_goals_scored
+    assert_equal 4, @stat_tracker.most_goals_scored('19')
+  end
+
+	def test_fewest_goals_scored
+    assert_equal 0, @stat_tracker.fewest_goals_scored('19')
+  end
   ### League Stats Test ###
   def test_it_can_count_teams
 		assert_equal 8, @stat_tracker.count_of_teams
@@ -93,5 +100,4 @@ class StatTrackerTest < Minitest::Test
   def test_it_can_find_the_team_with_the_best_offense
     assert_equal "New York City FC", @stat_tracker.best_offense
   end
-
 end
