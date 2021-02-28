@@ -64,6 +64,10 @@ class StatTrackerTest < Minitest::Test
 		assert_equal "20122013", @stat_tracker.best_season('19')
 	end
 
+	def test_it_has_a_worst_season
+		assert_equal  "20122013", @stat_tracker.worst_season('19')
+	end
+
 	### Team Stat Test ###
 	def test_it_can_count_teams
 		assert_equal 32, @stat_tracker.count_of_teams
