@@ -52,7 +52,7 @@ class StatTracker
 
   ### Team Stats ###
   def count_of_teams
-    team_stats.count
+    game_team_stats.count_of_teams
   end
 
   def team_info(team_id)
