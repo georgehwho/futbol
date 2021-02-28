@@ -68,6 +68,7 @@ class StatTrackerTest < Minitest::Test
 		assert_equal  "20122013", @stat_tracker.worst_season('19')
 	end
 
+
 	### Team Stat Test ###
 	def test_it_can_count_teams
 		assert_equal 32, @stat_tracker.count_of_teams
@@ -82,5 +83,9 @@ class StatTrackerTest < Minitest::Test
 			"link" => "/api/v1/teams/18"
 		}
 		assert_equal expected, @stat_tracker.team_info("18")
+	end
+
+	def test_it_has_a_win_average
+		assert_equal 0.57, @stat_tracker.average_win_percentage('17')
 	end
 end
