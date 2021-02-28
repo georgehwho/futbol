@@ -112,5 +112,4 @@ class GameStats
     games_by_season = games_won.group_by(&:season)
     test = games_by_season.min_by { |season, games| games.size }[0]
   end
-
 end

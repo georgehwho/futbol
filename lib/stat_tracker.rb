@@ -66,5 +66,8 @@ class StatTracker
   def team_info(team_id)
     team_stats.team_information(team_id)
   end
+  def average_win_percentage(id)
+    game_team_stats.average_win_percentage(id)
+  end
 
 end
