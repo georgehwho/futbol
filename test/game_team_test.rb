@@ -24,13 +24,9 @@ class GameTeamTest  < Minitest::Test
 
   def test_it_exists_and_has_attributes
     assert_instance_of GameTeam, @chargers
-<<<<<<< HEAD
-    assert_equal 1 , @chargers.game_id
-    assert_equal '2', @chargers.team_id
-=======
     assert_equal "1" , @chargers.game_id
     assert_equal "2", @chargers.team_id
->>>>>>> db591b148d801ee2cb1b06fc24a120e850bc9c2c
+
     assert_equal "away", @chargers.HoA
     assert_equal "WIN", @chargers.result
     assert_equal "OT", @chargers.settled_in

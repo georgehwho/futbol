@@ -39,7 +39,7 @@ class GameTeamStatsTest < Minitest::Test
 
   def test_it_can_group_by_team_id
     assert_instance_of Hash, game_team_stats.group_game_teams_by_team_id
-  end 
+  end
 
   def test_it_can_find_average_goals
     assert_equal 1.92, game_team_stats.average_goals_of_game_team
@@ -50,14 +50,14 @@ class GameTeamStatsTest < Minitest::Test
   end
 
   def test_it_has_an_array_by_team_id
-    assert_equal 7, game_teams_stats.array_by_team_id('17').count
+    assert_equal 7, game_team_stats.array_by_team_id('17').count
 
   end
   def test_it_has_number_of_wins
-    assert_equal 4, game_teams_stats.number_of_wins('17')
+    assert_equal 4, game_team_stats.number_of_wins('17')
   end
 
   def test_it_can_find_an_average_win_percentage
-    assert_equal 0.57, game_teams_stats.average_win_percentage('17')
+    assert_equal 0.57, game_team_stats.average_win_percentage('17')
   end
 end
