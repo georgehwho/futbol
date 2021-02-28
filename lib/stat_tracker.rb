@@ -59,10 +59,6 @@ class StatTracker
   end
 
   ### Team Stats ###
-  def count_of_teams
-    team_stats.count
-  end
-
   def team_info(team_id)
     team_stats.team_information(team_id)
   end
@@ -70,4 +66,12 @@ class StatTracker
     game_team_stats.average_win_percentage(id)
   end
 
+  ### League Statistics ###
+  def count_of_teams
+    game_team_stats.count_of_teams
+  end
+
+  def best_offense
+    game_team_stats.best_offense
+  end
 end

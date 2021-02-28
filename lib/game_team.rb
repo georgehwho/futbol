@@ -16,7 +16,11 @@ class GameTeam
               :takeaways
 
   def initialize(data)
+<<<<<<< HEAD
     @game_id                     = data[:game_id].to_i
+=======
+    @game_id                     = data[:game_id]
+>>>>>>> db591b148d801ee2cb1b06fc24a120e850bc9c2c
     @team_id                     = data[:team_id]
     @HoA                         = data[:HoA]
     @result                      = data[:result]

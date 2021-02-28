@@ -28,10 +28,6 @@ class TeamStats
     @teams_hash[id]
   end
 
-  def count
-    @teams.count
-  end
-
   def team_information(team_id)
     team_data = @teams_hash[team_id]
      {
