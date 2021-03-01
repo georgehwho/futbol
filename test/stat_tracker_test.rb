@@ -113,6 +113,14 @@ class StatTrackerTest < Minitest::Test
     assert_equal "New York City FC", @stat_tracker.highest_scoring_home_team
   end
 
+  def test_it_can_find_the_lowest_scoring_visitor
+    assert_equal "Sporting Kansas City", @stat_tracker.lowest_scoring_visitor
+  end
+
+  def test_it_can_find_the_lowest_scoring_home_team
+    assert_equal "Sporting Kansas City", @stat_tracker.lowest_scoring_home_team
+  end
+
 	### Season Stats ###
 	def test_winningest_coach
 		assert_equal "Claude Julien", @stat_tracker.winningest_coach('20122013')
