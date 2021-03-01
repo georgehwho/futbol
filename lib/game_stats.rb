@@ -132,4 +132,12 @@ class GameStats
   def fewest_goals_scored(id)
     game_by_goals(id).min
   end
+
+  def group_by_season
+    games.group_by(&:season)
+  end
+
+  def game_ids_by_season(season)
+    group_by_season[season].map(&:game_id)
+  end
 end
