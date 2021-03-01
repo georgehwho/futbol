@@ -19,8 +19,10 @@ class GameTeamStatsTest < Minitest::Test
   end
 
   def test_it_has_readable_attributes
+    # skip
     assert_equal stat_tracker, game_team_stats.stat_tracker
-    assert_equal 50, game_team_stats.game_teams.size
+    assert_equal 52, game_team_stats.game_teams.size
+    assert_equal 9, game_team_stats.game_teams_hash.size
   end
 
   def test_it_can_load_from_csv
@@ -34,7 +36,8 @@ class GameTeamStatsTest < Minitest::Test
   end
 
   def test_it_can_count_teams
-    assert_equal 8, game_team_stats.count_of_teams
+    # skip
+    assert_equal 9, game_team_stats.count_of_teams
   end
 
   def test_it_can_group_by_team_id
@@ -42,7 +45,8 @@ class GameTeamStatsTest < Minitest::Test
   end
 
   def test_it_can_find_average_goals
-    assert_equal 1.92, game_team_stats.average_goals_of_game_team
+    # skip
+    assert_equal 1.9, game_team_stats.average_goals_of_game_team
   end
 
   def test_it_can_find_the_team_with_the_best_offense
@@ -63,5 +67,13 @@ class GameTeamStatsTest < Minitest::Test
 
   def test_it_can_find_an_average_win_percentage
     assert_equal 0.57, game_team_stats.average_win_percentage('17')
+  end
+
+  def test_find_team_win_percentage
+    assert_equal 0.25, game_team_stats.find_team_win_percentage(game_team_stats.game_teams, '30')
+  end
+
+  def test_winningest_coach
+    assert_equal "Claude Julien", game_team_stats.winningest_coach('20122013')
   end
 end
