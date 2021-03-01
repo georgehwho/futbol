@@ -92,6 +92,10 @@ class StatTracker
     game_team_stats.highest_scoring_visitor
   end
 
+  def highest_scoring_home_team
+    game_team_stats.highest_scoring_home_team
+  end
+
   ### Season Statistics ###
   def winningest_coach(season)
     game_team_stats.winningest_coach(season)
