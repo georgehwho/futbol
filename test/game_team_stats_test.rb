@@ -76,4 +76,8 @@ class GameTeamStatsTest < Minitest::Test
   def test_winningest_coach
     assert_equal "Claude Julien", game_team_stats.winningest_coach('20122013')
   end
+
+  def test_worst_coach
+    assert_equal "John Tortorella", game_team_stats.worst_coach('20142015')
+  end
 end

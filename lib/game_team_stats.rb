@@ -5,8 +5,8 @@ class GameTeamStats
   include LoadCSV
 
   attr_reader :game_teams,
-              :stat_tracker,
-              :game_teams_hash
+  :stat_tracker,
+  :game_teams_hash
 
   def initialize(file_path, stat_tracker)
     @stat_tracker = stat_tracker
@@ -54,7 +54,7 @@ class GameTeamStats
     all_games =[]
     @game_teams.each do |game_team|
       if game_team.team_id == id
-         all_games << game_team
+        all_games << game_team
       end
     end
     all_games
@@ -93,5 +93,25 @@ class GameTeamStats
     winningest_team_id = team_wins.max_by { |key,value| value }[0]
 
     hash_game_games_in_season[winningest_team_id][0].head_coach
+  end
+
+  def worst_coach(season)
+    games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
+
+    game_teams_in_a_season = game_teams.find_all do |game_team|
+      games_in_a_season.include?(game_team.game_id)
+    end
+
+    hash_game_games_in_season = group_game_teams_by_team_id(game_teams_in_a_season)
+
+    team_wins = {}
+    hash_game_games_in_season.each do |team_id, list_of_game_teams|
+      team_wins[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
+    end
+
+    winningest_team_id = team_wins.min_by { |key,value| value }[0]
+
+    hash_game_games_in_season[winningest_team_id]
+    require 'pry'; binding.pry
   end
 end
