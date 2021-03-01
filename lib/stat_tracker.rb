@@ -87,4 +87,9 @@ class StatTracker
   def worst_offense
     game_team_stats.worst_offense
   end
+
+  ### Season Statistics ###
+  def winningest_coach(season)
+    game_team_stats.winningest_coach(season)
+  end
 end
