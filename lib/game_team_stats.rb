@@ -100,6 +100,32 @@ class GameTeamStats
     stat_tracker.team_stats.find_by_id(highest_average_goal_team_id).team_name
   end 
 
+  def lowest_scoring_visitor
+    away_gt = game_teams.find_all { |gt| gt.hoa == 'away'}
+    gt_hash = group_game_teams_by_team_id(away_gt)
+
+    hash_average_goals = {}
+    gt_hash.each do |t_id, gt|
+      hash_average_goals[t_id] = average_goals(gt)
+    end
+
+    lowest_average_goal_team_id = hash_average_goals.min_by { |k,v| v }[0]
+    stat_tracker.team_stats.find_by_id(lowest_average_goal_team_id).team_name
+  end
+
+  def lowest_scoring_home_team
+    home_gt = game_teams.find_all { |gt| gt.hoa == 'home'}
+    gt_hash = group_game_teams_by_team_id(home_gt)
+
+    hash_average_goals = {}
+    gt_hash.each do |t_id, gt|
+      hash_average_goals[t_id] = average_goals(gt)
+    end
+
+    lowest_average_goal_team_id = hash_average_goals.min_by { |k,v| v }[0]
+    stat_tracker.team_stats.find_by_id(lowest_average_goal_team_id).team_name
+  end
+
   def find_team_win_percentage(list_of_game_teams = game_teams, id)
     group_by_teams = group_game_teams_by_team_id(list_of_game_teams)
     wins = group_by_teams[id].count { |game_team| game_team.result == "WIN" }
