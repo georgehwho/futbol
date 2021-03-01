@@ -14,9 +14,9 @@ class GameTeamTest  < Minitest::Test
                     shots: "7",
                     tackles: "2",
                     pim: "1",
-                    power_play_opportunities: "4",
-                    power_play_goals: "3",
-                    face_off_win_percentage: "99.9",
+                    powerplayopportunities: "4",
+                    powerplaygoals: "3",
+                    faceoffwinpercentage: "99.9",
                     giveaways: "5",
                     takeaways: "6"
       })
