@@ -49,6 +49,10 @@ class GameTeamStatsTest < Minitest::Test
     assert_equal "New York City FC", game_team_stats.best_offense
   end
 
+  def test_it_can_find_the_team_with_the_worst_offense
+    assert_equal "Sporting Kansas City", game_team_stats.worst_offense
+  end
+
   def test_it_has_an_array_by_team_id
     assert_equal 7, game_team_stats.array_by_team_id('17').count
 

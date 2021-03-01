@@ -100,4 +100,8 @@ class StatTrackerTest < Minitest::Test
   def test_it_can_find_the_team_with_the_best_offense
     assert_equal "New York City FC", @stat_tracker.best_offense
   end
+
+  def test_it_can_find_the_team_with_the_worst_offense
+    assert_equal "Sporting Kansas City", @stat_tracker.worst_offense
+  end
 end
