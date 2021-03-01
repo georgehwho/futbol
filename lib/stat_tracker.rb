@@ -83,4 +83,8 @@ class StatTracker
   def best_offense
     game_team_stats.best_offense
   end
+
+  def worst_offense
+    game_team_stats.worst_offense
+  end
 end
