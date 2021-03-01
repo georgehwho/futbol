@@ -80,4 +80,56 @@ class GameStats
     end
     hash
   end
+
+  def find_games_by_team_id(id)
+    games.find_all do |game|
+      game.away_team_id == id || game.home_team_id == id
+    end
+  end
+
+  def find_games_won(list_of_games, id)
+    games_won = []
+    list_of_games.each do |game|
+      if game.away_team_id == id && game.away_win?
+        games_won << game
+      elsif game.home_team_id == id && game.home_win?
+        games_won << game
+      end
+    end
+    games_won
+  end
+
+  def best_season(id)
+    games_played = find_games_by_team_id(id)
+    games_won = find_games_won(games_played, id)
+    games_by_season = games_won.group_by(&:season)
+    test = games_by_season.max_by { |season, games| games.size }[0]
+  end
+
+  def worst_season(id)
+    games_played = find_games_by_team_id(id)
+    games_won = find_games_won(games_played, id)
+    games_by_season = games_won.group_by(&:season)
+    test = games_by_season.min_by { |season, games| games.size }[0]
+  end
+
+  def game_by_goals(id)
+    @games_hash.map do |game_id, game|
+      home_team = game.home_team_id == id
+      team_playing = home_team || game.away_team_id == id
+      if team_playing && home_team
+        game.home_goals
+      else team_playing
+        game.away_goals
+      end
+    end.compact
+  end
+
+  def most_goals_scored(id)
+    game_by_goals(id).max
+  end
+
+  def fewest_goals_scored(id)
+    game_by_goals(id).min
+  end
 end

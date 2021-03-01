@@ -26,6 +26,7 @@ class GameTeamTest  < Minitest::Test
     assert_instance_of GameTeam, @chargers
     assert_equal "1" , @chargers.game_id
     assert_equal "2", @chargers.team_id
+
     assert_equal "away", @chargers.HoA
     assert_equal "WIN", @chargers.result
     assert_equal "OT", @chargers.settled_in
