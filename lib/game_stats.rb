@@ -59,7 +59,7 @@ class GameStats
 
   def count_of_games_by_season
     hash = {}
-    games.map do |game|
+    games.each do |game|
       hash[game.season] = 0 if hash[game.season].nil?
       hash[game.season] += 1
     end
@@ -74,7 +74,7 @@ class GameStats
   def average_goals_by_season
     games_by_season = games.group_by(&:season)
     hash = {}
-    games_by_season.map do |season, season_games|
+    games_by_season.each do |season, season_games|
       hash[season] = 0 if hash[season].nil?
       hash[season] = average_goals_per_game(season_games)
     end
@@ -103,14 +103,14 @@ class GameStats
     games_played = find_games_by_team_id(id)
     games_won = find_games_won(games_played, id)
     games_by_season = games_won.group_by(&:season)
-    test = games_by_season.max_by { |season, games| games.size }[0]
+    games_by_season.max_by { |season, games| games.size }[0]
   end
 
   def worst_season(id)
     games_played = find_games_by_team_id(id)
     games_won = find_games_won(games_played, id)
     games_by_season = games_won.group_by(&:season)
-    test = games_by_season.min_by { |season, games| games.size }[0]
+    games_by_season.min_by { |season, games| games.size }[0]
   end
 
   def game_by_goals(id)
@@ -131,5 +131,13 @@ class GameStats
 
   def fewest_goals_scored(id)
     game_by_goals(id).min
+  end
+
+  def group_by_season
+    games.group_by(&:season)
+  end
+
+  def game_ids_by_season(season)
+    group_by_season[season].map(&:game_id)
   end
 end
