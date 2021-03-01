@@ -66,9 +66,26 @@ class GameTeamStats
     end.size
   end
 
-  def average_win_percentage(id)
-    (number_of_wins(id) /array_by_team_id(id).size.to_f).round(2)
+  def average_goals(gt)
+    (gt.sum(&:goals) / gt.size.to_f).round(2)
   end
+
+  def average_win_percentage(id)
+  (number_of_wins(id) /array_by_team_id(id).size.to_f).round(2)
+  end
+
+  def highest_scoring_visitor
+    away_gt = game_teams.find_all { |gt| gt.hoa == 'away'}
+    gt_hash = group_game_teams_by_team_id(away_gt)
+
+    hash_average_goals = {}
+    gt_hash.each do |t_id, gt|
+      hash_average_goals[t_id] = average_goals(gt)
+    end
+
+    highest_average_goal_team_id = hash_average_goals.max_by { |k,v| v }[0]
+    stat_tracker.team_stats.find_by_id(highest_average_goal_team_id).team_name
+  end 
 
   def find_team_win_percentage(list_of_game_teams = game_teams, id)
     group_by_teams = group_game_teams_by_team_id(list_of_game_teams)
@@ -112,6 +129,6 @@ class GameTeamStats
     winningest_team_id = team_wins.min_by { |key,value| value }[0]
 
     hash_game_games_in_season[winningest_team_id]
-    require 'pry'; binding.pry
+    # require 'pry'; binding.pry
   end
 end
