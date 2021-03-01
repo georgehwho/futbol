@@ -40,6 +40,14 @@ class GameTeamStats
     stat_tracker.team_stats.find_by_id(best_offense_team_id).team_name
   end
 
+  def worst_offense
+    team_with_worst_offense = group_game_teams_by_team_id.min_by do |team_id, game_team|
+      average_goals_of_game_team(game_team)
+    end
+    worst_offense_team_id = team_with_worst_offense[0]
+    stat_tracker.team_stats.find_by_id(worst_offense_team_id).team_name
+  end
+
   def array_by_team_id(id)
     all_games =[]
     @game_teams.each do |game_team|
