@@ -61,6 +61,10 @@ class GameTeamStatsTest < Minitest::Test
     assert_equal "FC Dallas", game_team_stats.highest_scoring_visitor
   end
 
+  def test_it_can_find_the_highest_scoring_home_team
+    assert_equal "New York City FC", game_team_stats.highest_scoring_home_team
+  end
+
   def test_it_has_an_array_by_team_id
     assert_equal 7, game_team_stats.array_by_team_id('17').count
 
