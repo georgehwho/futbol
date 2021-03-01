@@ -59,7 +59,7 @@ class GameStats
 
   def count_of_games_by_season
     hash = {}
-    games.map do |game|
+    games.each do |game|
       hash[game.season] = 0 if hash[game.season].nil?
       hash[game.season] += 1
     end
@@ -74,7 +74,7 @@ class GameStats
   def average_goals_by_season
     games_by_season = games.group_by(&:season)
     hash = {}
-    games_by_season.map do |season, season_games|
+    games_by_season.each do |season, season_games|
       hash[season] = 0 if hash[season].nil?
       hash[season] = average_goals_per_game(season_games)
     end
