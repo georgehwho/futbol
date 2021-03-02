@@ -105,10 +105,8 @@ class GameTeamStatsTest < Minitest::Test
     assert_equal "Orlando City SC", game_team_stats.fewest_tackles('20122013')
   end
 
-
   def test_accuracy_of_game_teams
     assert_equal 1.00, game_team_stats.accuracy_of_game_teams('17')
-
   end
 
   def test_it_has_a_most_accurate_team
@@ -119,5 +117,11 @@ class GameTeamStatsTest < Minitest::Test
     assert_equal "Sporting Kansas City", game_team_stats.least_accurate_team('20122013')
   end
 
+  def test_favorite_opponents
+    assert_equal 'New England Revolution', game_team_stats.favorite_opponent('17')
+  end
 
+  def test_rival
+    assert_equal 'New England Revolution', game_team_stats.rival('17')
+  end
 end

@@ -75,6 +75,13 @@ class StatTracker
     game_stats.fewest_goals_scored(id)
   end
 
+  def favorite_opponent(id)
+    game_team_stats.favorite_opponent(id)
+  end
+
+  def rival(id)
+    game_team_stats.rival(id)
+  end
   ### League Statistics ###
   def count_of_teams
     game_team_stats.count_of_teams

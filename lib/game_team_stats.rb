@@ -131,11 +131,10 @@ class GameTeamStats
   end
 
   def find_head_coach_win_percentage(list_of_game_teams = game_teams, id)
-    group_by_teams = group_game_teams_by_head_coach(list_of_game_teams)
-    wins = group_by_teams[id].count { |game_team| game_team.result == "WIN" }
-    (wins / group_by_teams[id].length.to_f).round(2)
+    group_by_head_coach = group_game_teams_by_head_coach(list_of_game_teams)
+    wins = group_by_head_coach[id].count { |game_team| game_team.result == "WIN" }
+    (wins / group_by_head_coach[id].length.to_f).round(2)
   end
-
 
   def winningest_coach(season)
     games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
@@ -252,5 +251,53 @@ class GameTeamStats
 
     least_accurate_team_id = team_accuracy.min_by { |k,v| v }[0]
     stat_tracker.team_stats.find_by_id(least_accurate_team_id).team_name
+  end
+
+  def favorite_opponent(id)
+    hash_of_game_teams_by_team_id = group_game_teams_by_team_id
+    game_teams_for_team = hash_of_game_teams_by_team_id[id]
+
+    opponents = {}
+    game_teams.each do |og_game_team|
+      game_teams_for_team.each do |team_game_team|
+        opponents[og_game_team.team_id] = [] if opponents[og_game_team.team_id].nil?
+        opponents[og_game_team.team_id] << og_game_team if og_game_team.game_id == team_game_team.game_id && og_game_team.team_id != team_game_team.team_id
+      end
+    end
+    opponents.delete_if { |k,v| v.empty? }
+
+    opponents_win_percentage = {}
+    opponents.each do |team_id, list_of_game_teams|
+      opponents_win_percentage[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
+    end
+    fav_opp_team_id = opponents_win_percentage.min_by { |h,v| v }[0]
+    stat_tracker.team_stats.find_by_id(fav_opp_team_id).team_name
+  end
+
+  def rival(id)
+    hash_of_game_teams_by_team_id = group_game_teams_by_team_id
+    game_teams_for_team = hash_of_game_teams_by_team_id[id]
+
+    opponents = {}
+    game_teams.each do |og_game_team|
+      game_teams_for_team.each do |team_game_team|
+        opponents[og_game_team.team_id] = [] if opponents[og_game_team.team_id].nil?
+        opponents[og_game_team.team_id] << og_game_team if og_game_team.game_id == team_game_team.game_id && og_game_team.team_id != team_game_team.team_id
+      end
+    end
+    opponents.delete_if { |k,v| v.empty? }
+
+    opponents_win_percentage = {}
+    opponents.each do |team_id, list_of_game_teams|
+      opponents_win_percentage[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
+    end
+    fav_opp_team_id = opponents_win_percentage.max_by { |h,v| v }[0]
+    stat_tracker.team_stats.find_by_id(fav_opp_team_id).team_name
+  end
+
+  def find_team_win_percentage(list_of_game_teams = game_teams, id)
+    group_by_teams = group_game_teams_by_team_id(list_of_game_teams)
+    wins = group_by_teams[id].count { |game_team| game_team.result == "WIN" }
+    (wins / group_by_teams[id].length.to_f)
   end
 end
