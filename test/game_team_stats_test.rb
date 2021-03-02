@@ -85,15 +85,11 @@ class GameTeamStatsTest < Minitest::Test
     assert_equal 0.57, game_team_stats.average_win_percentage('17')
   end
 
-  def test_find_team_win_percentage
-    assert_equal 0.25, game_team_stats.find_team_win_percentage(game_team_stats.game_teams, '30')
-  end
-
   def test_winningest_coach
     assert_equal "Claude Julien", game_team_stats.winningest_coach('20122013')
   end
 
-  # def test_worst_coach
-  #   assert_equal "John Tortorella", game_team_stats.worst_coach('20142015')
-  # end
+  def test_worst_coach
+    assert_equal "John Tortorella", game_team_stats.worst_coach('20142015')
+  end
 end

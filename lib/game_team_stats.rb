@@ -98,7 +98,7 @@ class GameTeamStats
 
     highest_average_goal_team_id = hash_average_goals.max_by { |k,v| v }[0]
     stat_tracker.team_stats.find_by_id(highest_average_goal_team_id).team_name
-  end 
+  end
 
   def lowest_scoring_visitor
     away_gt = game_teams.find_all { |gt| gt.hoa == 'away'}
@@ -126,11 +126,16 @@ class GameTeamStats
     stat_tracker.team_stats.find_by_id(lowest_average_goal_team_id).team_name
   end
 
-  def find_team_win_percentage(list_of_game_teams = game_teams, id)
-    group_by_teams = group_game_teams_by_team_id(list_of_game_teams)
+  def group_game_teams_by_head_coach(list_of_game_teams = game_teams)
+    list_of_game_teams.group_by(&:head_coach)
+  end
+
+  def find_head_coach_win_percentage(list_of_game_teams = game_teams, id)
+    group_by_teams = group_game_teams_by_head_coach(list_of_game_teams)
     wins = group_by_teams[id].count { |game_team| game_team.result == "WIN" }
     (wins / group_by_teams[id].length.to_f).round(2)
   end
+
 
   def winningest_coach(season)
     games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
@@ -139,35 +144,30 @@ class GameTeamStats
       games_in_a_season.include?(game_team.game_id)
     end
 
-    hash_game_games_in_season = group_game_teams_by_team_id(game_teams_in_a_season)
+    hash_game_teams_in_season = group_game_teams_by_head_coach(game_teams_in_a_season)
 
-    team_wins = {}
-    hash_game_games_in_season.each do |team_id, list_of_game_teams|
-      team_wins[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
+    head_coach_wins = {}
+    hash_game_teams_in_season.each do |head_coach, list_of_game_teams|
+      head_coach_wins[head_coach] = find_head_coach_win_percentage(list_of_game_teams, head_coach)
     end
 
-    winningest_team_id = team_wins.max_by { |key,value| value }[0]
-
-    hash_game_games_in_season[winningest_team_id][0].head_coach
+    head_coach_wins.max_by { |key,value| value }[0]
   end
 
-  # def worst_coach(season)
-  #   games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
+  def worst_coach(season)
+    games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
 
-  #   game_teams_in_a_season = game_teams.find_all do |game_team|
-  #     games_in_a_season.include?(game_team.game_id)
-  #   end
+    game_teams_in_a_season = game_teams.find_all do |game_team|
+      games_in_a_season.include?(game_team.game_id)
+    end
 
-  #   hash_game_games_in_season = group_game_teams_by_team_id(game_teams_in_a_season)
+    hash_game_teams_in_season = group_game_teams_by_head_coach(game_teams_in_a_season)
 
-  #   team_wins = {}
-  #   hash_game_games_in_season.each do |team_id, list_of_game_teams|
-  #     team_wins[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
-  #   end
+    head_coach_wins = {}
+    hash_game_teams_in_season.each do |head_coach, list_of_game_teams|
+      head_coach_wins[head_coach] = find_head_coach_win_percentage(list_of_game_teams, head_coach)
+    end
 
-  #   winningest_team_id = team_wins.min_by { |key,value| value }[0]
-
-  #   hash_game_games_in_season[winningest_team_id]
-  #   # require 'pry'; binding.pry
-  # end
+    head_coach_wins.min_by { |key,value| value }[0]
+  end
 end
