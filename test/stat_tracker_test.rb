@@ -92,6 +92,14 @@ class StatTrackerTest < Minitest::Test
 	def test_fewest_goals_scored
 		assert_equal 0, @stat_tracker.fewest_goals_scored('19')
 	end
+
+	def test_favorite_opponents
+    assert_equal 'New England Revolution', @stat_tracker.favorite_opponent('17')
+  end
+
+  def test_rival
+    assert_equal 'New England Revolution', @stat_tracker.rival('17')
+  end
 	### League Stats Test ###
 	def test_it_can_count_teams
 		assert_equal 9, @stat_tracker.count_of_teams

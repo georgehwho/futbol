@@ -92,4 +92,12 @@ class GameTeamStatsTest < Minitest::Test
   def test_worst_coach
     assert_equal "John Tortorella", game_team_stats.worst_coach('20142015')
   end
+
+  def test_favorite_opponents
+    assert_equal 'New England Revolution', game_team_stats.favorite_opponent('17')
+  end
+
+  def test_rival
+    assert_equal 'New England Revolution', game_team_stats.rival('17')
+  end
 end
