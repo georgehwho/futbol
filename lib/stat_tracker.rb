@@ -17,6 +17,14 @@ class StatTracker
     new(locations)
   end
 
+  def find_team_name_by_id(id)
+    team_stats.find_team_name_by_id(id)
+  end
+
+  def game_ids_by_season
+    game_stats.game_ids_by_season
+  end
+
   ### Game Stats ###
   def highest_total_score
     game_stats.highest_total_score
@@ -68,11 +76,11 @@ class StatTracker
   end
 
   def most_goals_scored(id)
-    game_stats.most_goals_scored(id)
+    game_team_stats.most_goals_scored(id)
   end
 
   def fewest_goals_scored(id)
-    game_stats.fewest_goals_scored(id)
+    game_team_stats.fewest_goals_scored(id)
   end
 
   def favorite_opponent(id)

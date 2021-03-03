@@ -45,8 +45,7 @@ class GameStatsTest < Minitest::Test
   end
 
   def test_it_can_find_a_team_by_id
-    assert_instance_of Team, game_stats.stat_tracker.team_stats.find_by_id("1")
-    assert_equal 'Atlanta United', game_stats.stat_tracker.team_stats.find_by_id("1").team_name
+    assert_equal 'Atlanta United', game_stats.stat_tracker.find_team_name_by_id("1")
   end
 
   def test_game_can_find_highest_total_score
@@ -109,23 +108,15 @@ class GameStatsTest < Minitest::Test
     assert_equal "20122013", game_stats.worst_season('19')
   end
 
-  def test_it_can_show_game_by_goals
-    assert_equal 50, game_stats.game_by_goals('19').size
-  end
-
-  def test_most_goals_scored
-    assert_equal 4, game_stats.most_goals_scored('19')
-  end
-
-  def test_fewest_goals_scored
-    assert_equal 0, game_stats.fewest_goals_scored('19')
-  end
-
   def test_group_by_season
     assert_equal 2, game_stats.group_by_season.size
   end
 
-  def test_find_by_season
-    assert_equal '2012030135', game_stats.game_ids_by_season('20142015')[0]
+  def test_opponent_team_ids
+    assert_equal ['6', '15'], game_stats.opponent_team_ids('3')
+  end
+
+  def test_games_can_group_by_season_and_show_ids
+    assert_equal 2, game_stats.game_ids_by_season.size
   end
 end

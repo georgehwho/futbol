@@ -16,6 +16,10 @@ class StatTrackerTest < Minitest::Test
 		assert_instance_of StatTracker, stat_tracker
 	end
 
+	def test_it_can_find_a_team_name_by_id
+		assert_equal 'LA Galaxy', @stat_tracker.find_team_name_by_id('17')
+	end
+
 	### Game Stat Test ###
 	def test_it_can_find_the_highest_total_score
 		# skip
@@ -86,16 +90,16 @@ class StatTrackerTest < Minitest::Test
 	end
 
 	def test_most_goals_scored
-		assert_equal 4, @stat_tracker.most_goals_scored('19')
+		assert_equal 2, @stat_tracker.most_goals_scored('3')
 	end
 
 	def test_fewest_goals_scored
-		assert_equal 0, @stat_tracker.fewest_goals_scored('19')
+		assert_equal 1, @stat_tracker.fewest_goals_scored('3')
 	end
 
 	def test_favorite_opponents
     assert_equal 'New England Revolution', @stat_tracker.favorite_opponent('17')
-  end
+	end
 
   def test_rival
     assert_equal 'New England Revolution', @stat_tracker.rival('17')
@@ -136,7 +140,7 @@ class StatTrackerTest < Minitest::Test
 
 	def test_worst_coach
     assert_equal "John Tortorella", @stat_tracker.worst_coach('20142015')
-  end
+	end
 
 	def test_it_has_most_tackles
 		assert_equal "New England Revolution", @stat_tracker.most_tackles('20122013')
@@ -152,7 +156,5 @@ class StatTrackerTest < Minitest::Test
 
 	def test_it_has_a_least_accurate_team
 		assert_equal "Sporting Kansas City", @stat_tracker.least_accurate_team('20122013')
-
 	end
-
 end

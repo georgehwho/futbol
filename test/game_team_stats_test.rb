@@ -22,17 +22,8 @@ class GameTeamStatsTest < Minitest::Test
     # skip
     assert_equal stat_tracker, game_team_stats.stat_tracker
     assert_equal 52, game_team_stats.game_teams.size
-    assert_equal 9, game_team_stats.game_teams_hash.size
-  end
-
-  def test_it_can_load_from_csv
-    first_row = CSV.open('./test/truncated_csv/game_teams_truncated.csv', headers: true, header_converters: :symbol ) {
-      |csv| csv.first
-    }
-
-    first_game_teams = GameTeam.new(first_row)
-
-    assert_instance_of Array, game_team_stats.game_teams
+    assert_equal 9, game_team_stats.team_id_hash.size
+    assert_equal 2, game_team_stats.hoa_hash.size
   end
 
   def test_it_can_count_teams
@@ -41,12 +32,16 @@ class GameTeamStatsTest < Minitest::Test
   end
 
   def test_it_can_group_by_team_id
-    assert_instance_of Hash, game_team_stats.group_game_teams_by_team_id
+    assert_instance_of Hash, game_team_stats.group_by_team_id
+  end
+
+  def test_it_can_group_by_hoa
+    assert_instance_of Hash, game_team_stats.group_by_hoa
   end
 
   def test_it_can_find_average_goals
     # skip
-    assert_equal 1.9, game_team_stats.average_goals_of_game_team
+    assert_equal 1.9, game_team_stats.average_goals_of_game_team(game_team_stats.game_teams)
   end
 
   def test_it_can_find_the_team_with_the_best_offense
@@ -71,14 +66,6 @@ class GameTeamStatsTest < Minitest::Test
 
   def test_it_can_find_the_lowest_scoring_home_team
     assert_equal "Sporting Kansas City", game_team_stats.lowest_scoring_home_team
-  end
-
-  def test_it_has_an_array_by_team_id
-    assert_equal 7, game_team_stats.array_by_team_id('17').count
-
-  end
-  def test_it_has_number_of_wins
-    assert_equal 4, game_team_stats.number_of_wins('17')
   end
 
   def test_it_can_find_an_average_win_percentage
@@ -123,5 +110,17 @@ class GameTeamStatsTest < Minitest::Test
 
   def test_rival
     assert_equal 'New England Revolution', game_team_stats.rival('17')
+  end
+
+  def test_most_goals_scored
+    assert_equal 2, game_team_stats.most_goals_scored('3')
+  end
+
+  def test_fewest_goals_scored
+    assert_equal 1, game_team_stats.fewest_goals_scored('3')
+  end
+
+  def test_season_hash_can_organize_game_teams_by_season
+    assert_equal 2, game_team_stats.create_season_hash.size
   end
 end

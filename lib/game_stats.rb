@@ -1,8 +1,10 @@
 require_relative 'game'
 require_relative 'load_csv'
+require_relative 'math'
 
 class GameStats
   include LoadCSV
+  include Math
 
   attr_reader :games,
               :games_hash,
@@ -29,6 +31,8 @@ class GameStats
   end
 
   ### Required Queries ###
+
+  ### start of game stats ###
   def highest_total_score
     highest_scoring_game = games.max_by { |game| game.total_score}
     highest_scoring_game.total_score
@@ -40,46 +44,35 @@ class GameStats
 
   def percentage_home_wins
     total_home_games_won = games.find_all { |game| game.home_win? }.size
-    percentage_of_games(total_home_games_won)
+    percentage(total_home_games_won, games.size)
   end
 
   def percentage_visitor_wins
     total_visitor_games_won = games.find_all { |game| game.away_win? }.size
-    percentage_of_games(total_visitor_games_won)
+    percentage(total_visitor_games_won, games.size)
   end
 
   def percentage_ties
     total_games_tied = games.find_all { |game| game.tie? }.size
-    percentage_of_games(total_games_tied)
-  end
-
-  def percentage_of_games(comparison, game_type = games)
-    (comparison / game_type.size.to_f).round(2)
+    percentage(total_games_tied, games.size)
   end
 
   def count_of_games_by_season
-    hash = {}
-    games.each do |game|
-      hash[game.season] = 0 if hash[game.season].nil?
-      hash[game.season] += 1
-    end
-    hash
+    games.group_by(&:season).transform_values(&:size)
   end
 
   def average_goals_per_game(input_games = games)
     all_scores = input_games.sum(&:total_score)
-    percentage_of_games(all_scores, input_games)
+    percentage(all_scores, input_games.size)
   end
 
   def average_goals_by_season
     games_by_season = games.group_by(&:season)
-    hash = {}
-    games_by_season.each do |season, season_games|
-      hash[season] = 0 if hash[season].nil?
-      hash[season] = average_goals_per_game(season_games)
+    games_by_season.transform_values do |season_games|
+      average_goals_per_game(season_games)
     end
-    hash
   end
+  ### end of game stats ###
 
   def find_games_by_team_id(id)
     games.find_all do |game|
@@ -113,31 +106,22 @@ class GameStats
     games_by_season.min_by { |season, games| games.size }[0]
   end
 
-  def game_by_goals(id)
-    @games_hash.map do |game_id, game|
-      home_team = game.home_team_id == id
-      team_playing = home_team || game.away_team_id == id
-      if team_playing && home_team
-        game.home_goals
-      else team_playing
-        game.away_goals
-      end
-    end.compact
-  end
-
-  def most_goals_scored(id)
-    game_by_goals(id).max
-  end
-
-  def fewest_goals_scored(id)
-    game_by_goals(id).min
-  end
-
   def group_by_season
     games.group_by(&:season)
   end
 
-  def game_ids_by_season(season)
-    group_by_season[season].map(&:game_id)
+  def game_ids_by_season
+    group_by_season.transform_values do |games|
+      games.map(&:game_id)
+    end
+  end
+
+  def opponent_team_ids(team_id)
+    team_games = games.find_all do |game|
+      game.home_team_id == team_id || game.away_team_id == team_id
+    end
+    team_games.map do |game|
+      team_id == game.away_team_id ? game = game.home_team_id : game = game.away_team_id
+    end.uniq
   end
 end

@@ -1,8 +1,10 @@
 require_relative 'team'
 require_relative 'load_csv'
+require_relative 'math'
 
 class TeamStats
   include LoadCSV
+  include Math
 
   attr_reader :teams,
               :teams_hash,
@@ -24,8 +26,8 @@ class TeamStats
     @teams_hash = teams.map{ |team| [team.team_id, team] }.to_h
   end
 
-  def find_by_id(id)
-    @teams_hash[id]
+  def find_team_name_by_id(id)
+    @teams_hash[id].team_name
   end
 
   def team_information(team_id)
