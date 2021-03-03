@@ -119,4 +119,20 @@ class StatTracker
   def worst_coach(season)
     game_team_stats.worst_coach(season)
   end
+
+  def most_tackles(season)
+    game_team_stats.most_tackles(season)
+  end
+
+  def fewest_tackles(season)
+    game_team_stats.fewest_tackles(season)
+  end
+
+  def most_accurate_team(season)
+    game_team_stats.most_accurate_team(season)
+  end
+
+  def least_accurate_team(season)
+    game_team_stats.least_accurate_team(season)
+  end
 end
