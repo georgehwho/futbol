@@ -209,35 +209,34 @@ class GameTeamStats
   end
 
   #####
-  def favorite_opponent(id)
-    game_teams_for_team = team_id_hash[id]
 
-    opponents = {}
-    game_teams.each do |og_game_team|
-      game_teams_for_team.each do |team_game_team|
-        opponents[og_game_team.team_id] = [] if opponents[og_game_team.team_id].nil?
-        opponents[og_game_team.team_id] << og_game_team if og_game_team.game_id == team_game_team.game_id && og_game_team.team_id != team_game_team.team_id
-      end
+  def find_all_opponents(id)
+    game_ids_for_game_team = team_id_hash[id].map(&:game_id)
+
+    opponent_team_ids = stat_tracker.game_stats.opponent_team_ids(id)
+
+    opponent_game_teams = opponent_team_ids.flat_map do |team_id|
+      team_id = team_id_hash[team_id]
+    end.compact
+
+    cleaned_game_teams = opponent_game_teams.delete_if do |game_team|
+      not game_ids_for_game_team.include?(game_team.game_id)
     end
-    opponents.delete_if { |k,v| v.empty? }
 
+    opponents = opponent_game_teams.group_by do |team|
+      team.team_id
+    end
+  end
+
+  def favorite_opponent(id)
+    opponents = find_all_opponents(id)
     convert_to_win_percentage(opponents)
     fav_opp_team_id = lowest_team_id(opponents)
     stat_tracker.find_team_name_by_id(fav_opp_team_id)
   end
 
   def rival(id)
-    game_teams_for_team = team_id_hash[id]
-
-    opponents = {}
-    game_teams.each do |og_game_team|
-      game_teams_for_team.each do |team_game_team|
-        opponents[og_game_team.team_id] = [] if opponents[og_game_team.team_id].nil?
-        opponents[og_game_team.team_id] << og_game_team if og_game_team.game_id == team_game_team.game_id && og_game_team.team_id != team_game_team.team_id
-      end
-    end
-    opponents.delete_if { |k,v| v.empty? }
-
+    opponents = find_all_opponents(id)
     convert_to_win_percentage(opponents)
     fav_opp_team_id = highest_team_id(opponents)
     stat_tracker.find_team_name_by_id(fav_opp_team_id)
