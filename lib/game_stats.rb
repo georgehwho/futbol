@@ -120,7 +120,7 @@ class GameStats
     team_games = games.find_all do |game|
       game.home_team_id == team_id || game.away_team_id == team_id
     end
-    opponents = team_games.map do |game|
+    team_games.map do |game|
       team_id == game.away_team_id ? game = game.home_team_id : game = game.away_team_id
     end.uniq
   end

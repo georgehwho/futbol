@@ -229,11 +229,11 @@ class GameTeamStats
       team_id = team_id_hash[team_id]
     end.compact
 
-    cleaned_game_teams = opponent_game_teams.delete_if do |game_team|
+    opponent_game_teams.delete_if do |game_team|
       not game_ids_for_game_team.include?(game_team.game_id)
     end
 
-    opponents = opponent_game_teams.group_by do |team|
+    opponent_game_teams.group_by do |team|
       team.team_id
     end
   end

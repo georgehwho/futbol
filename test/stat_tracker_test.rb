@@ -99,7 +99,7 @@ class StatTrackerTest < Minitest::Test
 
 	def test_favorite_opponents
     assert_equal 'New England Revolution', @stat_tracker.favorite_opponent('17')
-  end
+	end
 
   def test_rival
     assert_equal 'New England Revolution', @stat_tracker.rival('17')
@@ -140,7 +140,7 @@ class StatTrackerTest < Minitest::Test
 
 	def test_worst_coach
     assert_equal "John Tortorella", @stat_tracker.worst_coach('20142015')
-  end
+	end
 
 	def test_it_has_most_tackles
 		assert_equal "New England Revolution", @stat_tracker.most_tackles('20122013')

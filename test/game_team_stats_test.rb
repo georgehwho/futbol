@@ -26,16 +26,6 @@ class GameTeamStatsTest < Minitest::Test
     assert_equal 2, game_team_stats.hoa_hash.size
   end
 
-  def test_it_can_load_from_csv
-    first_row = CSV.open('./test/truncated_csv/game_teams_truncated.csv', headers: true, header_converters: :symbol ) {
-      |csv| csv.first
-    }
-
-    first_game_teams = GameTeam.new(first_row)
-
-    assert_instance_of Array, game_team_stats.game_teams
-  end
-
   def test_it_can_count_teams
     # skip
     assert_equal 9, game_team_stats.count_of_teams
