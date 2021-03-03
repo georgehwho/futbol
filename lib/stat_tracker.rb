@@ -68,11 +68,11 @@ class StatTracker
   end
 
   def most_goals_scored(id)
-    game_stats.most_goals_scored(id)
+    game_team_stats.most_goals_scored(id)
   end
 
   def fewest_goals_scored(id)
-    game_stats.fewest_goals_scored(id)
+    game_team_stats.fewest_goals_scored(id)
   end
 
   def favorite_opponent(id)

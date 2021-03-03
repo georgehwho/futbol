@@ -124,4 +124,12 @@ class GameTeamStatsTest < Minitest::Test
   def test_rival
     assert_equal 'New England Revolution', game_team_stats.rival('17')
   end
+
+  def test_most_goals_scored
+    assert_equal 2, game_team_stats.most_goals_scored('3')
+  end
+
+  def test_fewest_goals_scored
+    assert_equal 1, game_team_stats.fewest_goals_scored('3')
+  end
 end

@@ -300,4 +300,12 @@ class GameTeamStats
     wins = group_by_teams[id].count { |game_team| game_team.result == "WIN" }
     (wins / group_by_teams[id].length.to_f)
   end
+
+  def most_goals_scored(id)
+    game_teams_hash[id].max_by(&:goals).goals
+  end
+
+  def fewest_goals_scored(id)
+    game_teams_hash[id].min_by(&:goals).goals
+  end
 end

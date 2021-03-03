@@ -86,11 +86,11 @@ class StatTrackerTest < Minitest::Test
 	end
 
 	def test_most_goals_scored
-		assert_equal 4, @stat_tracker.most_goals_scored('19')
+		assert_equal 2, @stat_tracker.most_goals_scored('3')
 	end
 
 	def test_fewest_goals_scored
-		assert_equal 0, @stat_tracker.fewest_goals_scored('19')
+		assert_equal 1, @stat_tracker.fewest_goals_scored('3')
 	end
 
 	def test_favorite_opponents
