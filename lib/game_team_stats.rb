@@ -1,8 +1,10 @@
 require_relative 'game_team'
 require_relative 'load_csv'
+require_relative 'math'
 
 class GameTeamStats
   include LoadCSV
+  include Math
 
   attr_reader :game_teams,
   :stat_tracker,
@@ -19,14 +21,13 @@ class GameTeamStats
     @game_teams = load_csv(file_path, GameTeam)
   end
 
-  def count_of_teams
-    game_teams.uniq do |team|
-      team.team_id
-    end.size
-  end
-
   def group_game_teams_by_team_id(list_of_game_teams = game_teams)
     list_of_game_teams.group_by { |team| team.team_id }
+  end
+
+  ### league stats ###
+  def count_of_teams
+    game_teams.uniq(&:team_id).size
   end
 
   def average_goals_of_game_team(list_of_game_teams = game_teams)
@@ -125,6 +126,8 @@ class GameTeamStats
     lowest_average_goal_team_id = hash_average_goals.min_by { |k,v| v }[0]
     stat_tracker.team_stats.find_by_id(lowest_average_goal_team_id).team_name
   end
+
+  ### end of league stats ###
 
   def group_game_teams_by_head_coach(list_of_game_teams = game_teams)
     list_of_game_teams.group_by(&:head_coach)
@@ -308,4 +311,8 @@ class GameTeamStats
   def fewest_goals_scored(id)
     game_teams_hash[id].min_by(&:goals).goals
   end
+
+  # def best_season(id)
+  #   stat_tracker.game_stats.game_ids_by_season
+  # end
 end

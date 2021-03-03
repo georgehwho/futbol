@@ -1,8 +1,10 @@
 require_relative 'game'
 require_relative 'load_csv'
+require_relative 'math'
 
 class GameStats
   include LoadCSV
+  include Math
 
   attr_reader :games,
               :games_hash,
@@ -42,21 +44,17 @@ class GameStats
 
   def percentage_home_wins
     total_home_games_won = games.find_all { |game| game.home_win? }.size
-    percentage_of_games(total_home_games_won)
+    percentage(total_home_games_won, games.size)
   end
 
   def percentage_visitor_wins
     total_visitor_games_won = games.find_all { |game| game.away_win? }.size
-    percentage_of_games(total_visitor_games_won)
+    percentage(total_visitor_games_won, games.size)
   end
 
   def percentage_ties
     total_games_tied = games.find_all { |game| game.tie? }.size
-    percentage_of_games(total_games_tied)
-  end
-
-  def percentage_of_games(comparison, game_type = games)
-    (comparison / game_type.size.to_f).round(2) ## maybe refactor this
+    percentage(total_games_tied, games.size)
   end
 
   def count_of_games_by_season
@@ -65,7 +63,7 @@ class GameStats
 
   def average_goals_per_game(input_games = games)
     all_scores = input_games.sum(&:total_score)
-    percentage_of_games(all_scores, input_games)
+    percentage(all_scores, input_games.size)
   end
 
   def average_goals_by_season
