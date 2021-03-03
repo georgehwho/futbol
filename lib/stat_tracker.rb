@@ -25,6 +25,10 @@ class StatTracker
     team_stats.find_team_name_by_id(id)
   end
 
+  def game_ids_by_season(season)
+    game_stats.game_ids_by_season(season)
+  end
+
   ### Game Stats ###
   def highest_total_score
     game_stats.highest_total_score
