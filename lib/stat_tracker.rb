@@ -17,10 +17,6 @@ class StatTracker
     new(locations)
   end
 
-  def find_team_by_id(id)
-    team_stats.find_by_id(id)
-  end
-
   def find_team_name_by_id(id)
     team_stats.find_team_name_by_id(id)
   end

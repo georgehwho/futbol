@@ -151,17 +151,13 @@ class GameTeamStats
     lowest_team_id(hash_game_teams)
   end
 
-  def group_game_teams_by_team_id(list_of_game_teams = game_teams)
-    list_of_game_teams.group_by(&:team_id)
-  end
+########
 
   def tackles_by_team(list_of_game_teams)
     list_of_game_teams.sum do |game_team|
       game_team.tackles
     end
   end
-
-  ####
 
   def most_tackles(season)
     games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
@@ -177,7 +173,7 @@ class GameTeamStats
       total_tackles[team_id] = tackles_by_team(hash_game_teams_in_season[team_id])
     end
     most_tackles_team_id = total_tackles.max_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(most_tackles_team_id).team_name
+    stat_tracker.find_team_name_by_id(most_tackles_team_id)
   end
 
   def fewest_tackles(season)
@@ -194,7 +190,7 @@ class GameTeamStats
     total_tackles[team_id] = tackles_by_team(hash_game_teams_in_season[team_id])
     end
     most_tackles_team_id = total_tackles.min_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(most_tackles_team_id).team_name
+    stat_tracker.find_team_name_by_id(most_tackles_team_id)
   end
 
   def accuracy_of_game_teams(list_of_game_teams)
@@ -216,7 +212,7 @@ class GameTeamStats
     end
 
     most_accurate_team_id = team_accuracy.max_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(most_accurate_team_id).team_name
+    stat_tracker.find_team_name_by_id(most_accurate_team_id)
   end
 
   def least_accurate_team(season)
@@ -234,7 +230,7 @@ class GameTeamStats
     end
 
     least_accurate_team_id = team_accuracy.min_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(least_accurate_team_id).team_name
+    stat_tracker.find_team_name_by_id(least_accurate_team_id)
   end
 
   def favorite_opponent(id)
@@ -255,7 +251,7 @@ class GameTeamStats
       opponents_win_percentage[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
     end
     fav_opp_team_id = opponents_win_percentage.min_by { |h,v| v }[0]
-    stat_tracker.team_stats.find_by_id(fav_opp_team_id).team_name
+    stat_tracker.find_team_name_by_id(fav_opp_team_id)
   end
 
   def rival(id)
@@ -276,7 +272,7 @@ class GameTeamStats
       opponents_win_percentage[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
     end
     fav_opp_team_id = opponents_win_percentage.max_by { |h,v| v }[0]
-    stat_tracker.team_stats.find_by_id(fav_opp_team_id).team_name
+    stat_tracker.find_team_name_by_id(fav_opp_team_id)
   end
 
   def find_team_win_percentage(list_of_game_teams = game_teams, id)
