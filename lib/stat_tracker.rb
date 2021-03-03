@@ -21,10 +21,6 @@ class StatTracker
     team_stats.find_team_name_by_id(id)
   end
 
-  def game_ids_in_a_season(season)
-    game_stats.game_ids_in_a_season(season)
-  end
-
   def game_ids_by_season
     game_stats.game_ids_by_season
   end

@@ -116,10 +116,6 @@ class GameStats
     end
   end
 
-  def game_ids_in_a_season(season)
-    group_by_season[season].map(&:game_id)
-  end
-
   def opponent_team_ids(team_id)
     team_games = games.find_all do |game|
       game.home_team_id == team_id || game.away_team_id == team_id

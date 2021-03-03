@@ -112,10 +112,6 @@ class GameStatsTest < Minitest::Test
     assert_equal 2, game_stats.group_by_season.size
   end
 
-  def test_find_in_a_season
-    assert_equal '2012030135', game_stats.game_ids_in_a_season('20142015')[0]
-  end
-
   def test_opponent_team_ids
     assert_equal ['6', '15'], game_stats.opponent_team_ids('3')
   end
