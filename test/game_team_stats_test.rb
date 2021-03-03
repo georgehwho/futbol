@@ -129,4 +129,8 @@ class GameTeamStatsTest < Minitest::Test
   def test_fewest_goals_scored
     assert_equal 1, game_team_stats.fewest_goals_scored('3')
   end
+
+  def test_season_hash_can_organize_game_teams_by_season
+    assert_equal 2, game_team_stats.create_season_hash.size
+  end
 end

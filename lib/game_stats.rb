@@ -110,7 +110,13 @@ class GameStats
     games.group_by(&:season)
   end
 
-  def game_ids_by_season(season)
+  def game_ids_by_season
+    group_by_season.transform_values do |games|
+      games.map(&:game_id)
+    end
+  end
+
+  def game_ids_in_a_season(season)
     group_by_season[season].map(&:game_id)
   end
 

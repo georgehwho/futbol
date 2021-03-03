@@ -156,7 +156,5 @@ class StatTrackerTest < Minitest::Test
 
 	def test_it_has_a_least_accurate_team
 		assert_equal "Sporting Kansas City", @stat_tracker.least_accurate_team('20122013')
-
 	end
-
 end

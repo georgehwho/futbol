@@ -9,7 +9,8 @@ class GameTeamStats
   attr_reader :game_teams,
               :stat_tracker,
               :team_id_hash,
-              :hoa_hash
+              :hoa_hash,
+              :season_hash
 
   def initialize(file_path, stat_tracker)
     @stat_tracker = stat_tracker
@@ -17,6 +18,7 @@ class GameTeamStats
     create_game_teams_array(file_path)
     @team_id_hash = group_by_team_id
     @hoa_hash = group_by_hoa
+    @season_hash = create_season_hash
   end
 
   def create_game_teams_array(file_path)
@@ -43,7 +45,7 @@ class GameTeamStats
   end
 
   # def best_season(id)
-  #   stat_tracker.game_stats.game_ids_by_season
+  #   stat_tracker.game_statsin_a
   # end
 
   ### league stats ###
@@ -137,11 +139,19 @@ class GameTeamStats
     end
   end
 
-  def game_teams_in_a_season(season)
-    game_ids_in_a_season = stat_tracker.game_ids_by_season(season)
-    game_teams_in_a_season = game_teams.find_all do |game_team|
-      game_ids_in_a_season.include?(game_team.game_id)
+  def create_season_hash
+    game_ids_by_season = stat_tracker.game_ids_by_season
+    season_hash = {}
+    game_ids_by_season.each do |season, game_ids|
+      season_hash[season] = game_teams.find_all do |game_team|
+        game_ids.include?(game_team.game_id)
+      end
     end
+    season_hash
+  end
+
+  def game_teams_in_a_season(season)
+    season_hash[season]
   end
 
   def winningest_coach(season)
