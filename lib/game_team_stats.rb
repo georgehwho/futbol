@@ -34,6 +34,14 @@ class GameTeamStats
     percentage(all_wins, hash[id].size)
   end
 
+  def most_goals_scored(id)
+    team_id_hash[id].max_by(&:goals).goals
+  end
+
+  def fewest_goals_scored(id)
+    team_id_hash[id].min_by(&:goals).goals
+  end
+
   # def best_season(id)
   #   stat_tracker.game_stats.game_ids_by_season
   # end
@@ -163,60 +171,46 @@ class GameTeamStats
   def most_tackles(season)
     hash_game_teams = group_by_team_id(game_teams_in_a_season(season))
     convert_to_tackles(hash_game_teams)
-    most_tackles_team_id = highest_team_id(hash_game_teams)
-    stat_tracker.find_team_name_by_id(most_tackles_team_id)
+    tackles_team_id = highest_team_id(hash_game_teams)
+    stat_tracker.find_team_name_by_id(tackles_team_id)
   end
 
   def fewest_tackles(season)
     hash_game_teams = group_by_team_id(game_teams_in_a_season(season))
     convert_to_tackles(hash_game_teams)
-    most_tackles_team_id = lowest_team_id(hash_game_teams)
-    stat_tracker.find_team_name_by_id(most_tackles_team_id)
+    tackles_team_id = lowest_team_id(hash_game_teams)
+    stat_tracker.find_team_name_by_id(tackles_team_id)
   end
 
+  #####
+
   def accuracy_of_game_teams(list_of_game_teams)
-    list_of_game_teams.sum(&:goals).to_f/list_of_game_teams.sum(&:shots)
+    percentage(list_of_game_teams.sum(&:goals), list_of_game_teams.sum(&:shots), 5)
+  end
+
+  def convert_to_accuracy(game_team_hash)
+    game_team_hash.map do |team_id, game_team|
+      game_team_hash[team_id] = accuracy_of_game_teams(game_team)
+    end
   end
 
   def most_accurate_team(season)
-    games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
-
-    game_teams_in_a_season = game_teams.find_all do |game_team|
-    games_in_a_season.include?(game_team.game_id)
-    end
-
-    hash_game_teams_in_season = group_by_team_id(game_teams_in_a_season)
-
-    team_accuracy = {}
-    hash_game_teams_in_season.each do |team_id, game_teams|
-    team_accuracy[team_id] = accuracy_of_game_teams(hash_game_teams_in_season[team_id])
-    end
-
-    most_accurate_team_id = team_accuracy.max_by { |k,v| v }[0]
-    stat_tracker.find_team_name_by_id(most_accurate_team_id)
+    hash_game_teams = group_by_team_id(game_teams_in_a_season(season))
+    convert_to_accuracy(hash_game_teams)
+    accuracy_team_id = highest_team_id(hash_game_teams)
+    stat_tracker.find_team_name_by_id(accuracy_team_id)
   end
 
   def least_accurate_team(season)
-    games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
-
-    game_teams_in_a_season = game_teams.find_all do |game_team|
-    games_in_a_season.include?(game_team.game_id)
-    end
-
-    hash_game_teams_in_season = group_by_team_id(game_teams_in_a_season)
-
-    team_accuracy = {}
-    hash_game_teams_in_season.each do |team_id, game_teams|
-    team_accuracy[team_id] = accuracy_of_game_teams(hash_game_teams_in_season[team_id])
-    end
-
-    least_accurate_team_id = team_accuracy.min_by { |k,v| v }[0]
-    stat_tracker.find_team_name_by_id(least_accurate_team_id)
+    hash_game_teams = group_by_team_id(game_teams_in_a_season(season))
+    convert_to_accuracy(hash_game_teams)
+    accuracy_team_id = lowest_team_id(hash_game_teams)
+    stat_tracker.find_team_name_by_id(accuracy_team_id)
   end
 
+  #####
   def favorite_opponent(id)
-    hash_of_game_teams_by_team_id = group_by_team_id
-    game_teams_for_team = hash_of_game_teams_by_team_id[id]
+    game_teams_for_team = team_id_hash[id]
 
     opponents = {}
     game_teams.each do |og_game_team|
@@ -227,17 +221,13 @@ class GameTeamStats
     end
     opponents.delete_if { |k,v| v.empty? }
 
-    opponents_win_percentage = {}
-    opponents.each do |team_id, list_of_game_teams|
-      opponents_win_percentage[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
-    end
-    fav_opp_team_id = opponents_win_percentage.min_by { |h,v| v }[0]
+    convert_to_win_percentage(opponents)
+    fav_opp_team_id = lowest_team_id(opponents)
     stat_tracker.find_team_name_by_id(fav_opp_team_id)
   end
 
   def rival(id)
-    hash_of_game_teams_by_team_id = group_by_team_id
-    game_teams_for_team = hash_of_game_teams_by_team_id[id]
+    game_teams_for_team = team_id_hash[id]
 
     opponents = {}
     game_teams.each do |og_game_team|
@@ -248,25 +238,8 @@ class GameTeamStats
     end
     opponents.delete_if { |k,v| v.empty? }
 
-    opponents_win_percentage = {}
-    opponents.each do |team_id, list_of_game_teams|
-      opponents_win_percentage[team_id] = find_team_win_percentage(list_of_game_teams, team_id)
-    end
-    fav_opp_team_id = opponents_win_percentage.max_by { |h,v| v }[0]
+    convert_to_win_percentage(opponents)
+    fav_opp_team_id = highest_team_id(opponents)
     stat_tracker.find_team_name_by_id(fav_opp_team_id)
-  end
-
-  def find_team_win_percentage(list_of_game_teams = game_teams, id)
-    group_by_teams = group_by_team_id(list_of_game_teams)
-    wins = group_by_teams[id].count { |game_team| game_team.result == "WIN" }
-    (wins / group_by_teams[id].length.to_f)
-  end
-
-  def most_goals_scored(id)
-    team_id_hash[id].max_by(&:goals).goals
-  end
-
-  def fewest_goals_scored(id)
-    team_id_hash[id].min_by(&:goals).goals
   end
 end

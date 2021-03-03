@@ -1,5 +1,5 @@
 module Math
-  def percentage(numerator, denominator)
-    (numerator / denominator.to_f).round(2)
+  def percentage(numerator, denominator, float = 2)
+    (numerator / denominator.to_f).round(float)
   end
 end
