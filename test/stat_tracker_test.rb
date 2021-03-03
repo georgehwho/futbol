@@ -16,6 +16,14 @@ class StatTrackerTest < Minitest::Test
 		assert_instance_of StatTracker, stat_tracker
 	end
 
+	def test_it_can_find_a_team_by_id
+		assert_instance_of Team, @stat_tracker.find_team_by_id('17')
+	end
+
+	def test_it_can_find_a_team_name_by_id
+		assert_equal 'LA Galaxy', @stat_tracker.find_team_name_by_id('17')
+	end
+
 	### Game Stat Test ###
 	def test_it_can_find_the_highest_total_score
 		# skip

@@ -17,6 +17,14 @@ class StatTracker
     new(locations)
   end
 
+  def find_team_by_id(id)
+    team_stats.find_by_id(id)
+  end
+
+  def find_team_name_by_id(id)
+    team_stats.find_team_name_by_id(id)
+  end
+
   ### Game Stats ###
   def highest_total_score
     game_stats.highest_total_score

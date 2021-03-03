@@ -43,6 +43,10 @@ class TestStatsTest < Minitest::Test
     assert_instance_of Team, team_stats.find_by_id("1")
   end
 
+  def test_it_can_find_a_team_by_id
+    assert_equal 'Atlanta United', team_stats.find_team_name_by_id("1")
+  end
+
   def test_it_has_team_information
     expected19 = {"franchise_id" => "18",
                  "team_name" => "Philadelphia Union",

@@ -7,14 +7,16 @@ class GameTeamStats
   include Math
 
   attr_reader :game_teams,
-  :stat_tracker,
-  :game_teams_hash
+              :stat_tracker,
+              :team_id_hash,
+              :hoa_hash
 
   def initialize(file_path, stat_tracker)
     @stat_tracker = stat_tracker
     @game_teams   = []
     create_game_teams_array(file_path)
-    @game_teams_hash = group_game_teams_by_team_id
+    @team_id_hash = group_game_teams_by_team_id
+    @hoa_hash = group_by_hoa
   end
 
   def create_game_teams_array(file_path)
@@ -25,106 +27,92 @@ class GameTeamStats
     list_of_game_teams.group_by { |team| team.team_id }
   end
 
+  ### team stats ###
+
+  def average_win_percentage(id)
+    all_wins = team_id_hash[id].count { |game_team| game_team.result == 'WIN' }
+    percentage(all_wins, team_id_hash[id].size)
+  end
+
+  # def best_season(id)
+  #   stat_tracker.game_stats.game_ids_by_season
+  # end
+
   ### league stats ###
   def count_of_teams
     game_teams.uniq(&:team_id).size
   end
 
-  def average_goals_of_game_team(list_of_game_teams = game_teams)
+  def average_goals_of_game_team(list_of_game_teams)
     all_goals = list_of_game_teams.sum(&:goals)
-    (all_goals / list_of_game_teams.size.to_f).round(2)
+    percentage(all_goals, list_of_game_teams.size)
   end
 
   def best_offense
-    team_with_best_offense = group_game_teams_by_team_id.max_by do |team_id, game_team|
+    team_with_best_offense = team_id_hash.max_by do |team_id, game_team|
       average_goals_of_game_team(game_team)
     end
     best_offense_team_id = team_with_best_offense[0]
-    stat_tracker.team_stats.find_by_id(best_offense_team_id).team_name
+    stat_tracker.find_team_name_by_id(best_offense_team_id)
   end
 
   def worst_offense
-    team_with_worst_offense = group_game_teams_by_team_id.min_by do |team_id, game_team|
+    team_with_worst_offense = team_id_hash.min_by do |team_id, game_team|
       average_goals_of_game_team(game_team)
     end
     worst_offense_team_id = team_with_worst_offense[0]
-    stat_tracker.team_stats.find_by_id(worst_offense_team_id).team_name
+    stat_tracker.find_team_name_by_id(worst_offense_team_id)
   end
 
-  def array_by_team_id(id)
-    all_games =[]
-    @game_teams.each do |game_team|
-      if game_team.team_id == id
-        all_games << game_team
-      end
+  #################################
+  def average_goals(game_team)
+    percentage(game_team.sum(&:goals), game_team.size)
+  end
+
+  def group_by_hoa
+    game_teams.group_by(&:hoa)
+  end
+
+  def convert_to_average_goals(game_team_hash)
+    game_team_hash.map do |team_id, game_team|
+      game_team_hash[team_id] = average_goals(game_team)
     end
-    all_games
   end
 
-  def number_of_wins(id)
-    array_by_team_id(id).find_all do  |game_team|
-      game_team.result == "WIN"
-    end.size
+  def highest_team_id(hash)
+    hash.max_by { |k,v| v }[0]
   end
 
-  def average_goals(gt)
-    (gt.sum(&:goals) / gt.size.to_f).round(2)
-  end
-
-  def average_win_percentage(id)
-  (number_of_wins(id) /array_by_team_id(id).size.to_f).round(2)
+  def lowest_team_id(hash)
+    hash.min_by { |k,v| v }[0]
   end
 
   def highest_scoring_visitor
-    away_gt = game_teams.find_all { |gt| gt.hoa == 'away'}
-    gt_hash = group_game_teams_by_team_id(away_gt)
-
-    hash_average_goals = {}
-    gt_hash.each do |t_id, gt|
-      hash_average_goals[t_id] = average_goals(gt)
-    end
-
-    highest_average_goal_team_id = hash_average_goals.max_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(highest_average_goal_team_id).team_name
+    away_team_hash = group_game_teams_by_team_id(hoa_hash['away'])
+    convert_to_average_goals(away_team_hash)
+    team_id = highest_team_id(away_team_hash)
+    stat_tracker.find_team_name_by_id(team_id)
   end
 
   def highest_scoring_home_team
-    home_gt = game_teams.find_all { |gt| gt.hoa == 'home'}
-    gt_hash = group_game_teams_by_team_id(home_gt)
-
-    hash_average_goals = {}
-    gt_hash.each do |t_id, gt|
-      hash_average_goals[t_id] = average_goals(gt)
-    end
-
-    highest_average_goal_team_id = hash_average_goals.max_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(highest_average_goal_team_id).team_name
+    home_team_hash = group_game_teams_by_team_id(hoa_hash['home'])
+    convert_to_average_goals(home_team_hash)
+    team_id = highest_team_id(home_team_hash)
+    stat_tracker.find_team_name_by_id(team_id)
   end
 
   def lowest_scoring_visitor
-    away_gt = game_teams.find_all { |gt| gt.hoa == 'away'}
-    gt_hash = group_game_teams_by_team_id(away_gt)
-
-    hash_average_goals = {}
-    gt_hash.each do |t_id, gt|
-      hash_average_goals[t_id] = average_goals(gt)
-    end
-
-    lowest_average_goal_team_id = hash_average_goals.min_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(lowest_average_goal_team_id).team_name
+    away_team_hash = group_game_teams_by_team_id(hoa_hash['away'])
+    convert_to_average_goals(away_team_hash)
+    team_id = lowest_team_id(away_team_hash)
+    stat_tracker.find_team_name_by_id(team_id)
   end
 
   def lowest_scoring_home_team
-    home_gt = game_teams.find_all { |gt| gt.hoa == 'home'}
-    gt_hash = group_game_teams_by_team_id(home_gt)
-
-    hash_average_goals = {}
-    gt_hash.each do |t_id, gt|
-      hash_average_goals[t_id] = average_goals(gt)
-    end
-
-    lowest_average_goal_team_id = hash_average_goals.min_by { |k,v| v }[0]
-    stat_tracker.team_stats.find_by_id(lowest_average_goal_team_id).team_name
+    home_team_hash = group_game_teams_by_team_id(hoa_hash['home'])
+    convert_to_average_goals(home_team_hash)
+    team_id = lowest_team_id(home_team_hash)
+    stat_tracker.find_team_name_by_id(team_id)
   end
 
   ### end of league stats ###
@@ -305,14 +293,10 @@ class GameTeamStats
   end
 
   def most_goals_scored(id)
-    game_teams_hash[id].max_by(&:goals).goals
+    team_id_hash[id].max_by(&:goals).goals
   end
 
   def fewest_goals_scored(id)
-    game_teams_hash[id].min_by(&:goals).goals
+    team_id_hash[id].min_by(&:goals).goals
   end
-
-  # def best_season(id)
-  #   stat_tracker.game_stats.game_ids_by_season
-  # end
 end
