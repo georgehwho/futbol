@@ -15,7 +15,7 @@ class GameTeamStats
     @stat_tracker = stat_tracker
     @game_teams   = []
     create_game_teams_array(file_path)
-    @team_id_hash = group_game_teams_by_team_id
+    @team_id_hash = group_by_team_id
     @hoa_hash = group_by_hoa
   end
 
@@ -23,7 +23,7 @@ class GameTeamStats
     @game_teams = load_csv(file_path, GameTeam)
   end
 
-  def group_game_teams_by_team_id(list_of_game_teams = game_teams)
+  def group_by_team_id(list_of_game_teams = game_teams)
     list_of_game_teams.group_by { |team| team.team_id }
   end
 
@@ -88,28 +88,28 @@ class GameTeamStats
   end
 
   def highest_scoring_visitor
-    away_team_hash = group_game_teams_by_team_id(hoa_hash['away'])
+    away_team_hash = group_by_team_id(hoa_hash['away'])
     convert_to_average_goals(away_team_hash)
     team_id = highest_team_id(away_team_hash)
     stat_tracker.find_team_name_by_id(team_id)
   end
 
   def highest_scoring_home_team
-    home_team_hash = group_game_teams_by_team_id(hoa_hash['home'])
+    home_team_hash = group_by_team_id(hoa_hash['home'])
     convert_to_average_goals(home_team_hash)
     team_id = highest_team_id(home_team_hash)
     stat_tracker.find_team_name_by_id(team_id)
   end
 
   def lowest_scoring_visitor
-    away_team_hash = group_game_teams_by_team_id(hoa_hash['away'])
+    away_team_hash = group_by_team_id(hoa_hash['away'])
     convert_to_average_goals(away_team_hash)
     team_id = lowest_team_id(away_team_hash)
     stat_tracker.find_team_name_by_id(team_id)
   end
 
   def lowest_scoring_home_team
-    home_team_hash = group_game_teams_by_team_id(hoa_hash['home'])
+    home_team_hash = group_by_team_id(hoa_hash['home'])
     convert_to_average_goals(home_team_hash)
     team_id = lowest_team_id(home_team_hash)
     stat_tracker.find_team_name_by_id(team_id)
@@ -130,23 +130,20 @@ class GameTeamStats
   end
 
   def game_teams_in_a_season(season)
-    games_in_a_season = stat_tracker.game_ids_by_season(season)
-
+    game_ids_in_a_season = stat_tracker.game_ids_by_season(season)
     game_teams_in_a_season = game_teams.find_all do |game_team|
-      games_in_a_season.include?(game_team.game_id)
+      game_ids_in_a_season.include?(game_team.game_id)
     end
-
-    hash_game_teams_in_season = group_by_head_coach(game_teams_in_a_season)
   end
 
   def winningest_coach(season)
-    hash_game_teams = game_teams_in_a_season(season)
+    hash_game_teams = group_by_head_coach(game_teams_in_a_season(season))
     convert_to_win_percentage(hash_game_teams)
     highest_team_id(hash_game_teams)
   end
 
   def worst_coach(season)
-    hash_game_teams = game_teams_in_a_season(season)
+    hash_game_teams = group_by_head_coach(game_teams_in_a_season(season))
     convert_to_win_percentage(hash_game_teams)
     lowest_team_id(hash_game_teams)
   end
@@ -154,42 +151,26 @@ class GameTeamStats
 ########
 
   def tackles_by_team(list_of_game_teams)
-    list_of_game_teams.sum do |game_team|
-      game_team.tackles
+    list_of_game_teams.sum(&:tackles)
+  end
+
+  def convert_to_tackles(game_team_hash)
+    game_team_hash.map do |team_id, game_team|
+      game_team_hash[team_id] = tackles_by_team(game_team)
     end
   end
 
   def most_tackles(season)
-    games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
-
-    game_teams_in_a_season = game_teams.find_all do |game_team|
-    games_in_a_season.include?(game_team.game_id)
-    end
-
-    hash_game_teams_in_season = group_game_teams_by_team_id(game_teams_in_a_season)
-
-    total_tackles = {}
-    hash_game_teams_in_season.each do |team_id, game_teams|
-      total_tackles[team_id] = tackles_by_team(hash_game_teams_in_season[team_id])
-    end
-    most_tackles_team_id = total_tackles.max_by { |k,v| v }[0]
+    hash_game_teams = group_by_team_id(game_teams_in_a_season(season))
+    convert_to_tackles(hash_game_teams)
+    most_tackles_team_id = highest_team_id(hash_game_teams)
     stat_tracker.find_team_name_by_id(most_tackles_team_id)
   end
 
   def fewest_tackles(season)
-    games_in_a_season = stat_tracker.game_stats.game_ids_by_season(season)
-
-    game_teams_in_a_season = game_teams.find_all do |game_team|
-    games_in_a_season.include?(game_team.game_id)
-    end
-
-    hash_game_teams_in_season = group_game_teams_by_team_id(game_teams_in_a_season)
-
-    total_tackles = {}
-    hash_game_teams_in_season.each do |team_id, game_teams|
-    total_tackles[team_id] = tackles_by_team(hash_game_teams_in_season[team_id])
-    end
-    most_tackles_team_id = total_tackles.min_by { |k,v| v }[0]
+    hash_game_teams = group_by_team_id(game_teams_in_a_season(season))
+    convert_to_tackles(hash_game_teams)
+    most_tackles_team_id = lowest_team_id(hash_game_teams)
     stat_tracker.find_team_name_by_id(most_tackles_team_id)
   end
 
@@ -204,7 +185,7 @@ class GameTeamStats
     games_in_a_season.include?(game_team.game_id)
     end
 
-    hash_game_teams_in_season = group_game_teams_by_team_id(game_teams_in_a_season)
+    hash_game_teams_in_season = group_by_team_id(game_teams_in_a_season)
 
     team_accuracy = {}
     hash_game_teams_in_season.each do |team_id, game_teams|
@@ -222,7 +203,7 @@ class GameTeamStats
     games_in_a_season.include?(game_team.game_id)
     end
 
-    hash_game_teams_in_season = group_game_teams_by_team_id(game_teams_in_a_season)
+    hash_game_teams_in_season = group_by_team_id(game_teams_in_a_season)
 
     team_accuracy = {}
     hash_game_teams_in_season.each do |team_id, game_teams|
@@ -234,7 +215,7 @@ class GameTeamStats
   end
 
   def favorite_opponent(id)
-    hash_of_game_teams_by_team_id = group_game_teams_by_team_id
+    hash_of_game_teams_by_team_id = group_by_team_id
     game_teams_for_team = hash_of_game_teams_by_team_id[id]
 
     opponents = {}
@@ -255,7 +236,7 @@ class GameTeamStats
   end
 
   def rival(id)
-    hash_of_game_teams_by_team_id = group_game_teams_by_team_id
+    hash_of_game_teams_by_team_id = group_by_team_id
     game_teams_for_team = hash_of_game_teams_by_team_id[id]
 
     opponents = {}
@@ -276,7 +257,7 @@ class GameTeamStats
   end
 
   def find_team_win_percentage(list_of_game_teams = game_teams, id)
-    group_by_teams = group_game_teams_by_team_id(list_of_game_teams)
+    group_by_teams = group_by_team_id(list_of_game_teams)
     wins = group_by_teams[id].count { |game_team| game_team.result == "WIN" }
     (wins / group_by_teams[id].length.to_f)
   end

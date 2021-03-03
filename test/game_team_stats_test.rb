@@ -42,7 +42,7 @@ class GameTeamStatsTest < Minitest::Test
   end
 
   def test_it_can_group_by_team_id
-    assert_instance_of Hash, game_team_stats.group_game_teams_by_team_id
+    assert_instance_of Hash, game_team_stats.group_by_team_id
   end
 
   def test_it_can_group_by_hoa
